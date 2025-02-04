@@ -22,199 +22,195 @@
     </div>
 
     <script>
-      // Quizdata met vragen, opties en bijbehorende persona's
-      const quizData = {
-        questions: [
-          {
-            question:
-              "In hoeverre bent u het eens of oneens met de volgende uitspraken over AI?",
-            instructions: "Selecteer één optie per vraag.",
-            subquestions: [
-              {
-                text: "Ik bewonder collega's die AI op een creatieve manier toepassen in hun werk",
-                options: [1, 2, 3, 4, 5],
-                persona: [
-                  ["Rebel"],
-                  ["Observer"],
-                  ["Underground", "Observer"],
-                  ["Superfan", "Maximalist"],
-                  ["Maximalist"],
-                ],
-              },
-              {
-                text: "Ik maak me zorgen dat AI mijn baan zal vervangen",
-                options: [1, 2, 3, 4, 5],
-                persona: [
-                  ["Maximalist", "Superfan"],
-                  ["Superfan", "Underground"],
-                  ["Observer"],
-                  ["Underground", "Observer"],
-                  ["Rebel"],
-                ],
-              },
-              {
-                text: "Ik ben geïnteresseerd in het leren of verder ontwikkelen van AI-vaardigheden",
-                options: [1, 2, 3, 4, 5],
-                persona: [
-                  ["Rebel"],
-                  ["Observer"],
-                  ["Underground"],
-                  ["Superfan"],
-                  ["Maximalist"],
-                ],
-              },
-            ],
-          },
-          {
-            question:
-              "Welke van de volgende uitspraken weerspiegelt het best uw visie op de potentiële impact van AI op de samenleving?",
-            options: [
-              "AI vormt een bedreiging zonder voordelen",
-              "AI is voornamelijk een bedreiging, maar heeft enkele voordelen",
-              "AI biedt voornamelijk voordelen, maar kent ook enkele risico's",
-              "AI biedt uitsluitend voordelen zonder bedreigingen",
-              "Ik denk niet echt na over AI of de impact ervan op de samenleving",
-            ],
-            persona: [
-              ["Rebel"],
-              ["Rebel", "Observer"],
-              ["Superfan", "Underground"],
-              ["Maximalist"],
-              ["Observer"],
-            ],
-          },
-          {
-            question:
-              "In welke mate ondersteunt uw organisatie het gebruik van AI bij werkgerelateerde taken?",
-            options: [
-              "AI-gebruik wordt actief aangemoedigd in alle vormen",
-              "AI-gebruik wordt aangemoedigd, maar binnen vastgestelde richtlijnen",
-              "AI-gebruik is toegestaan, maar wordt niet actief aangemoedigd of ontmoedigd",
-              "AI-gebruik wordt over het algemeen ontmoedigd",
-              "Het gebruik van AI is verboden binnen mijn organisatie",
-              "Ik weet niet hoe mijn organisatie tegenover AI-gebruik staat",
-            ],
-            persona: [[], [], [], [], [], []],
-          },
-          {
-            question:
-              "Deelt u uw gebruik van AI met collega's op de werkvloer?",
-            options: [
-              "Ja, en ik moedig anderen actief aan om AI te gebruiken",
-              "Ja, ik vermeld het regelmatig, maar probeer anderen niet te beïnvloeden",
-              "Ja, ik geef het aan als men ernaar vraagt, maar promoot het niet actief",
-              "Nee, ik bespreek dit niet met anderen op het werk",
-              "Niet van toepassing - ik gebruik geen AI op het werk",
-            ],
-            persona: [
-              ["Maximalist", "Superfan"],
-              ["Maximalist", "Superfan"],
-              ["Underground"],
-              ["Underground", "Rebel"],
-              ["Observer", "Rebel"],
-            ],
-          },
-          {
-            question:
-              "Hoe enthousiast of bezorgd bent u over de mogelijkheid dat AI en automatisering taken in uw huidige functie vervangen?",
-            options: [
-              "Zeer enthousiast",
-              "Enigszins enthousiast",
-              "Neutraal",
-              "Enigszins bezorgd",
-              "Zeer bezorgd",
-            ],
-            persona: [
-              ["Maximalist"],
-              ["Superfan"],
-              ["Observer"],
-              ["Underground"],
-              ["Rebel"],
-            ],
-          },
-          {
-            question: "Hoe voelt u zich over het gebruik van AI op de werkvloer?",
-            instructions: "Selecteer alle opties die van toepassing zijn.",
-            options: [
-              "Enthousiast",
-              "Bezorgd",
-              "Schuldig",
-              "Opgelucht",
-              "Onverschillig",
-              "Aarzelend",
-            ],
-            persona: [
-              ["Maximalist", "Superfan"],
-              ["Rebel", "Observer"],
-              ["Underground"],
-              ["Maximalist"],
-              ["Observer", "Underground"],
-              ["Rebel"],
-            ],
-          },
-          {
-            question:
-              "Welke van de volgende beschrijvingen komt het beste overeen met uw motivatie om AI op het werk te gebruiken?",
-            options: [
-              "Ik wil meer tijd vrijmaken voor strategische of creatieve werkzaamheden",
-              "Ik wil mijn capaciteit vergroten om meer werk te verzetten",
-              "Ik wil minder werk doen",
-              "Ik wil werk van hogere kwaliteit produceren",
-              "Niet van toepassing - ik ben niet gemotiveerd om AI op het werk te gebruiken",
-              "Anders",
-            ],
-            persona: [
-              ["Superfan"],
-              ["Underground"],
-              ["Observer"],
-              ["Maximalist"],
-              ["Rebel", "Observer"],
-              [],
-            ],
-          },
-          {
-            question:
-              "Hoe vaak gebruikt u AI-tools voor werkgerelateerde taken?",
-            options: [
-              "Dagelijks",
-              "Een paar keer per week",
-              "Wekelijks",
-              "Eens per twee weken",
-              "Maandelijks",
-              "Minder dan maandelijks",
-              "Nooit",
-              "Ik heb ze slechts één of twee keer getest",
-            ],
-            persona: [
-              ["Maximalist"],
-              ["Underground"],
-              ["Superfan"],
-              ["Superfan"],
-              ["Observer"],
-              ["Superfan"],
-              ["Rebel"],
-              ["Observer"],
-            ],
-          },
-        ],
-      };
+      (function () {
+        // Data module
+        const QuizData = {
+          questions: [
+            {
+              question: "In hoeverre bent u het eens of oneens met de volgende uitspraken over AI?",
+              instructions: "Selecteer één optie per vraag.",
+              subquestions: [
+                {
+                  text: "Ik bewonder collega's die AI op een creatieve manier toepassen in hun werk",
+                  options: [1, 2, 3, 4, 5],
+                  persona: [
+                    ["Rebel"],
+                    ["Observer"],
+                    ["Underground", "Observer"],
+                    ["Superfan", "Maximalist"],
+                    ["Maximalist"],
+                  ],
+                },
+                {
+                  text: "Ik maak me zorgen dat AI mijn baan zal vervangen",
+                  options: [1, 2, 3, 4, 5],
+                  persona: [
+                    ["Maximalist", "Superfan"],
+                    ["Superfan", "Underground"],
+                    ["Observer"],
+                    ["Underground", "Observer"],
+                    ["Rebel"],
+                  ],
+                },
+                {
+                  text: "Ik ben geïnteresseerd in het leren of verder ontwikkelen van AI-vaardigheden",
+                  options: [1, 2, 3, 4, 5],
+                  persona: [
+                    ["Rebel"],
+                    ["Observer"],
+                    ["Underground"],
+                    ["Superfan"],
+                    ["Maximalist"],
+                  ],
+                },
+              ],
+            },
+            {
+              question:
+                "Welke van de volgende uitspraken weerspiegelt het best uw visie op de potentiële impact van AI op de samenleving?",
+              options: [
+                "AI vormt een bedreiging zonder voordelen",
+                "AI is voornamelijk een bedreiging, maar heeft enkele voordelen",
+                "AI biedt voornamelijk voordelen, maar kent ook enkele risico's",
+                "AI biedt uitsluitend voordelen zonder bedreigingen",
+                "Ik denk niet echt na over AI of de impact ervan op de samenleving",
+              ],
+              persona: [
+                ["Rebel"],
+                ["Rebel", "Observer"],
+                ["Superfan", "Underground"],
+                ["Maximalist"],
+                ["Observer"],
+              ],
+            },
+            {
+              question:
+                "In welke mate ondersteunt uw organisatie het gebruik van AI bij werkgerelateerde taken?",
+              options: [
+                "AI-gebruik wordt actief aangemoedigd in alle vormen",
+                "AI-gebruik wordt aangemoedigd, maar binnen vastgestelde richtlijnen",
+                "AI-gebruik is toegestaan, maar wordt niet actief aangemoedigd of ontmoedigd",
+                "AI-gebruik wordt over het algemeen ontmoedigd",
+                "Het gebruik van AI is verboden binnen mijn organisatie",
+                "Ik weet niet hoe mijn organisatie tegenover AI-gebruik staat",
+              ],
+              persona: [[], [], [], [], [], []],
+            },
+            {
+              question: "Deelt u uw gebruik van AI met collega's op de werkvloer?",
+              options: [
+                "Ja, en ik moedig anderen actief aan om AI te gebruiken",
+                "Ja, ik vermeld het regelmatig, maar probeer anderen niet te beïnvloeden",
+                "Ja, ik geef het aan als men ernaar vraagt, maar promoot het niet actief",
+                "Nee, ik bespreek dit niet met anderen op het werk",
+                "Niet van toepassing - ik gebruik geen AI op het werk",
+              ],
+              persona: [
+                ["Maximalist", "Superfan"],
+                ["Maximalist", "Superfan"],
+                ["Underground"],
+                ["Underground", "Rebel"],
+                ["Observer", "Rebel"],
+              ],
+            },
+            {
+              question:
+                "Hoe enthousiast of bezorgd bent u over de mogelijkheid dat AI en automatisering taken in uw huidige functie vervangen?",
+              options: [
+                "Zeer enthousiast",
+                "Enigszins enthousiast",
+                "Neutraal",
+                "Enigszins bezorgd",
+                "Zeer bezorgd",
+              ],
+              persona: [
+                ["Maximalist"],
+                ["Superfan"],
+                ["Observer"],
+                ["Underground"],
+                ["Rebel"],
+              ],
+            },
+            {
+              question: "Hoe voelt u zich over het gebruik van AI op de werkvloer?",
+              instructions: "Selecteer alle opties die van toepassing zijn.",
+              options: [
+                "Enthousiast",
+                "Bezorgd",
+                "Schuldig",
+                "Opgelucht",
+                "Onverschillig",
+                "Aarzelend",
+              ],
+              persona: [
+                ["Maximalist", "Superfan"],
+                ["Rebel", "Observer"],
+                ["Underground"],
+                ["Maximalist"],
+                ["Observer", "Underground"],
+                ["Rebel"],
+              ],
+            },
+            {
+              question:
+                "Welke van de volgende beschrijvingen komt het beste overeen met uw motivatie om AI op het werk te gebruiken?",
+              options: [
+                "Ik wil meer tijd vrijmaken voor strategische of creatieve werkzaamheden",
+                "Ik wil mijn capaciteit vergroten om meer werk te verzetten",
+                "Ik wil minder werk doen",
+                "Ik wil werk van hogere kwaliteit produceren",
+                "Niet van toepassing - ik ben niet gemotiveerd om AI op het werk te gebruiken",
+                "Anders",
+              ],
+              persona: [
+                ["Superfan"],
+                ["Underground"],
+                ["Observer"],
+                ["Maximalist"],
+                ["Rebel", "Observer"],
+                [],
+              ],
+            },
+            {
+              question: "Hoe vaak gebruikt u AI-tools voor werkgerelateerde taken?",
+              options: [
+                "Dagelijks",
+                "Een paar keer per week",
+                "Wekelijks",
+                "Eens per twee weken",
+                "Maandelijks",
+                "Minder dan maandelijks",
+                "Nooit",
+                "Ik heb ze slechts één of twee keer getest",
+              ],
+              persona: [
+                ["Maximalist"],
+                ["Underground"],
+                ["Superfan"],
+                ["Superfan"],
+                ["Observer"],
+                ["Superfan"],
+                ["Rebel"],
+                ["Observer"],
+              ],
+            },
+          ],
+        };
 
-      // Beschrijvingen per AI persona (professioneel geformuleerd)
-      const personaDescriptions = {
-        Maximalist:
-          "🥰 <strong>De Maximalist</strong>: Maximalisten maken meerdere keren per week gebruik van AI om hun werk te verbeteren en spreken er met enthousiasme over.",
-        Underground:
-          "🤫 <strong>De Underground</strong>: Undergrounds zijn de Maximalisten in vermomming; zij maken vaak gebruik van AI, maar aarzelen om dit met collega's te delen.",
-        Rebel:
-          "😎 <strong>De Rebel</strong>: Rebellen onderschrijven de AI-hype niet. Zij vermijden het gebruik van AI en vinden het oneerlijk wanneer collega's deze tools inzetten.",
-        Superfan:
-          "🤩 <strong>De Superfan</strong>: Superfans zijn enthousiast en bewonderen de vooruitgang in AI, maar benutten het potentieel op de werkvloer nog niet volledig.",
-        Observer:
-          "🧐 <strong>De Observer</strong>: Observers hebben AI nog niet geïntegreerd in hun werkzaamheden en volgen de ontwikkelingen met interesse en voorzichtigheid.",
-      };
+        const PersonaDescriptions = {
+          Maximalist:
+            "🥰 <strong>De Maximalist</strong>: Maximalisten maken meerdere keren per week gebruik van AI om hun werk te verbeteren en spreken er met enthousiasme over.",
+          Underground:
+            "🤫 <strong>De Underground</strong>: Undergrounds zijn de Maximalisten in vermomming; zij maken vaak gebruik van AI, maar aarzelen om dit met collega's te delen.",
+          Rebel:
+            "😎 <strong>De Rebel</strong>: Rebellen onderschrijven de AI-hype niet. Zij vermijden het gebruik van AI en vinden het oneerlijk wanneer collega's deze tools inzetten.",
+          Superfan:
+            "🤩 <strong>De Superfan</strong>: Superfans zijn enthousiast en bewonderen de vooruitgang in AI, maar benutten het potentieel op de werkvloer nog niet volledig.",
+          Observer:
+            "🧐 <strong>De Observer</strong>: Observers hebben AI nog niet geïntegreerd in hun werkzaamheden en volgen de ontwikkelingen met interesse en voorzichtigheid.",
+        };
 
-      // Achtergrondtekst en toelichting voor het PDF rapport (doel en achtergrond)
-      const reportBackground = `
+        const ReportBackground = `
   <h2 class="text-2xl font-bold mb-4">Doel en achtergrond</h2>
   <p class="mb-4">
     Deze tool is gebaseerd op onderzoek van Slack’s Workforce Lab. Het doel van het onderzoek was te achterhalen wat werknemers motiveert om AI te gebruiken en hoe zij de inzet van AI op de werkvloer ervaren. Door diepgaande interviews en een enquête onder 5.000 fulltime kantoormedewerkers zijn vijf onderscheidende AI-persona’s vastgesteld.
@@ -235,471 +231,496 @@
   </div>
 `;
 
-      // Render de quiz, inclusief een naamveld en foutmeldingscontainer per vraag/subvraag
-      function renderQuiz() {
-        const quizForm = document.getElementById("quizForm");
-        quizForm.innerHTML = ""; // Maak formulier leeg
+        // Module: QuizRenderer
+        const QuizRenderer = {
+          renderQuiz: function () {
+            const quizForm = document.getElementById("quizForm");
+            quizForm.innerHTML = ""; // Maak formulier leeg
 
-        // Voeg het naamveld toe (alleen voornaam)
-        const nameContainer = document.createElement("div");
-        nameContainer.id = "name-container";
-        nameContainer.classList.add("mb-6");
-        const nameLabel = document.createElement("label");
-        nameLabel.htmlFor = "firstName";
-        nameLabel.classList.add("block", "text-lg", "font-medium", "mb-2");
-        nameLabel.innerText = "Voornaam (alleen uw voornaam vanwege privacy):";
-        const nameInput = document.createElement("input");
-        nameInput.type = "text";
-        nameInput.id = "firstName";
-        nameInput.name = "firstName";
-        nameInput.placeholder = "Vul hier uw voornaam in";
-        nameInput.classList.add("border", "p-2", "w-full");
-        nameInput.required = true;
-        nameContainer.appendChild(nameLabel);
-        nameContainer.appendChild(nameInput);
-        quizForm.appendChild(nameContainer);
+            // Voeg het naamveld toe
+            const nameContainer = document.createElement("div");
+            nameContainer.id = "name-container";
+            nameContainer.classList.add("mb-6");
+            const nameLabel = document.createElement("label");
+            nameLabel.htmlFor = "firstName";
+            nameLabel.classList.add("block", "text-lg", "font-medium", "mb-2");
+            nameLabel.innerText = "Voornaam (alleen uw voornaam vanwege privacy):";
+            const nameInput = document.createElement("input");
+            nameInput.type = "text";
+            nameInput.id = "firstName";
+            nameInput.name = "firstName";
+            nameInput.placeholder = "Vul hier uw voornaam in";
+            nameInput.classList.add("border", "p-2", "w-full");
+            nameInput.required = true;
+            nameContainer.appendChild(nameLabel);
+            nameContainer.appendChild(nameInput);
+            quizForm.appendChild(nameContainer);
 
-        // Loop door de hoofdvragen
-        quizData.questions.forEach((q, qIndex) => {
-          const questionContainer = document.createElement("div");
-          questionContainer.id = `question-${qIndex}`;
-          questionContainer.classList.add("border-b", "pb-4", "mb-4");
+            // Loop door de hoofdvragen
+            QuizData.questions.forEach((q, qIndex) => {
+              const questionContainer = document.createElement("div");
+              questionContainer.id = `question-${qIndex}`;
+              questionContainer.classList.add("border-b", "pb-4", "mb-4");
 
-          // Vraagtekst en instructies
-          const questionTitle = document.createElement("h2");
-          questionTitle.classList.add("text-xl", "font-semibold", "mb-2");
-          questionTitle.innerText = q.question;
-          questionContainer.appendChild(questionTitle);
+              // Vraagtekst en instructies
+              const questionTitle = document.createElement("h2");
+              questionTitle.classList.add("text-xl", "font-semibold", "mb-2");
+              questionTitle.innerText = q.question;
+              questionContainer.appendChild(questionTitle);
 
-          if (q.instructions) {
-            const instructions = document.createElement("p");
-            instructions.classList.add("text-sm", "text-gray-600", "mb-4");
-            instructions.innerText = q.instructions;
-            questionContainer.appendChild(instructions);
+              if (q.instructions) {
+                const instructions = document.createElement("p");
+                instructions.classList.add("text-sm", "text-gray-600", "mb-4");
+                instructions.innerText = q.instructions;
+                questionContainer.appendChild(instructions);
 
-            // Voeg de optie-toelichting toe als er sprake is van een Likert-scale
-            if (q.instructions.includes("Selecteer één optie per vraag")) {
-              const mappingText = document.createElement("p");
-              mappingText.classList.add("text-sm", "text-gray-600", "mb-4");
-              mappingText.innerText =
-                "1 = Helemaal oneens, 2 = Oneens, 3 = Neutraal, 4 = Eens, 5 = Helemaal eens";
-              questionContainer.appendChild(mappingText);
-            }
-          }
-
-          // Indien de vraag subvragen bevat
-          if (q.subquestions) {
-            q.subquestions.forEach((subq, subIndex) => {
-              const subContainer = document.createElement("div");
-              subContainer.id = `question-${qIndex}-sub-${subIndex}`;
-              subContainer.classList.add("mb-4", "pl-4", "border-l");
-
-              const subText = document.createElement("p");
-              subText.classList.add("font-medium", "mb-2");
-              subText.innerText = subq.text;
-              subContainer.appendChild(subText);
-
-              // Maak per optie een radioknop (enkelvoudige keuze)
-              subq.options.forEach((opt, optIndex) => {
-                const optionContainer = document.createElement("div");
-                optionContainer.classList.add("flex", "items-center", "mb-1");
-
-                const input = document.createElement("input");
-                input.type = "radio";
-                input.name = `q${qIndex}_sub${subIndex}`; // unieke naam per subvraag
-                input.value = optIndex;
-                input.id = `q${qIndex}_sub${subIndex}_opt${optIndex}`;
-                input.classList.add("mr-2");
-
-                const label = document.createElement("label");
-                label.htmlFor = input.id;
-                label.innerText = opt;
-                label.classList.add("cursor-pointer");
-
-                optionContainer.appendChild(input);
-                optionContainer.appendChild(label);
-                subContainer.appendChild(optionContainer);
-              });
-              questionContainer.appendChild(subContainer);
-            });
-          } else {
-            // Bepaal of de vraag meerkeuze (checkbox) is of enkelvoudige keuze (radio)
-            const isMultiple =
-              q.instructions &&
-              q.instructions.toLowerCase().includes("alle opties");
-
-            q.options.forEach((opt, optIndex) => {
-              const optionContainer = document.createElement("div");
-              optionContainer.classList.add("flex", "items-center", "mb-1");
-
-              const input = document.createElement("input");
-              input.type = isMultiple ? "checkbox" : "radio";
-              input.name = `q${qIndex}`;
-              input.value = optIndex;
-              input.id = `q${qIndex}_opt${optIndex}`;
-              input.classList.add("mr-2");
-
-              const label = document.createElement("label");
-              label.htmlFor = input.id;
-              label.innerText = opt;
-              label.classList.add("cursor-pointer");
-
-              optionContainer.appendChild(input);
-              optionContainer.appendChild(label);
-              questionContainer.appendChild(optionContainer);
-            });
-          }
-
-          quizForm.appendChild(questionContainer);
-        });
-
-        // Voeg de submitknop toe
-        const submitBtn = document.createElement("button");
-        submitBtn.type = "submit";
-        submitBtn.innerText = "Resultaten Berekenen";
-        submitBtn.classList.add(
-          "bg-blue-600",
-          "text-white",
-          "px-4",
-          "py-2",
-          "rounded",
-          "hover:bg-blue-700"
-        );
-        quizForm.appendChild(submitBtn);
-      }
-
-      // Controleer of alle vragen zijn ingevuld en toon indien nodig inline foutmeldingen
-      function calculateResults(event) {
-        event.preventDefault(); // Voorkom herladen van de pagina
-
-        // Verwijder alle eerder toegevoegde foutmeldingen
-        document
-          .querySelectorAll(".error-message")
-          .forEach((el) => el.remove());
-
-        let allAnswered = true;
-
-        // Controleer het naamveld (alleen 1 woord)
-        const firstNameInput = document.getElementById("firstName");
-        const firstName = firstNameInput.value.trim();
-        if (firstName === "" || firstName.split(/\s+/).length > 1) {
-          const error = document.createElement("p");
-          error.classList.add("error-message", "text-red-600", "mt-1", "text-sm");
-          error.innerText = "✱ Vul alstublieft alleen uw voornaam in vanwege privacy.";
-          document.getElementById("name-container").appendChild(error);
-          allAnswered = false;
-        } else {
-          // Sla de voornaam globaal op voor het PDF rapport
-          window.userFirstName = firstName;
-        }
-
-        // Loop door de vragen en controleer of er een antwoord is geselecteerd
-        for (let qIndex = 0; qIndex < quizData.questions.length; qIndex++) {
-          const q = quizData.questions[qIndex];
-
-          if (q.subquestions) {
-            // Controleer elke subvraag
-            for (let subIndex = 0; subIndex < q.subquestions.length; subIndex++) {
-              const selected = document.querySelector(
-                `input[name="q${qIndex}_sub${subIndex}"]:checked`
-              );
-              if (!selected) {
-                const subContainer = document.getElementById(
-                  `question-${qIndex}-sub-${subIndex}`
-                );
-                const error = document.createElement("p");
-                error.classList.add("error-message", "text-red-600", "mt-1", "text-sm");
-                error.innerText = "✱ Vul alstublieft een antwoord in voor deze vraag.";
-                subContainer.appendChild(error);
-                allAnswered = false;
+                // Extra toelichting voor Likert-scale vragen
+                if (q.instructions.includes("Selecteer één optie per vraag")) {
+                  const mappingText = document.createElement("p");
+                  mappingText.classList.add("text-sm", "text-gray-600", "mb-4");
+                  mappingText.innerText =
+                    "1 = Helemaal oneens, 2 = Oneens, 3 = Neutraal, 4 = Eens, 5 = Helemaal eens";
+                  questionContainer.appendChild(mappingText);
+                }
               }
-            }
-          } else {
-            // Controleer normale vraag
-            const isMultiple =
-              q.instructions &&
-              q.instructions.toLowerCase().includes("alle opties");
-            if (isMultiple) {
-              const checkedOptions = document.querySelectorAll(`input[name="q${qIndex}"]:checked`);
-              if (checkedOptions.length === 0) {
-                const questionContainer = document.getElementById(`question-${qIndex}`);
-                const error = document.createElement("p");
-                error.classList.add("error-message", "text-red-600", "mt-1", "text-sm");
-                error.innerText = "✱ Vul alstublieft een antwoord in voor deze vraag.";
-                questionContainer.appendChild(error);
-                allAnswered = false;
-              }
-            } else {
-              const selected = document.querySelector(`input[name="q${qIndex}"]:checked`);
-              if (!selected) {
-                const questionContainer = document.getElementById(`question-${qIndex}`);
-                const error = document.createElement("p");
-                error.classList.add("error-message", "text-red-600", "mt-1", "text-sm");
-                error.innerText = "✱ Vul alstublieft een antwoord in voor deze vraag.";
-                questionContainer.appendChild(error);
-                allAnswered = false;
-              }
-            }
-          }
-        }
 
-        // Als niet alle vragen beantwoord zijn, scroll naar de eerste foutmelding
-        if (!allAnswered) {
-          const firstError = document.querySelector(".error-message");
-          if (firstError) {
-            firstError.scrollIntoView({ behavior: "smooth", block: "center" });
-          }
-          return;
-        }
+              if (q.subquestions) {
+                q.subquestions.forEach((subq, subIndex) => {
+                  const subContainer = document.createElement("div");
+                  subContainer.id = `question-${qIndex}-sub-${subIndex}`;
+                  subContainer.classList.add("mb-4", "pl-4", "border-l");
 
-        // Bereken de scores per persona
-        const scores = {
-          Maximalist: 0,
-          Underground: 0,
-          Rebel: 0,
-          Superfan: 0,
-          Observer: 0,
-        };
+                  const subText = document.createElement("p");
+                  subText.classList.add("font-medium", "mb-2");
+                  subText.innerText = subq.text;
+                  subContainer.appendChild(subText);
 
-        for (let qIndex = 0; qIndex < quizData.questions.length; qIndex++) {
-          const q = quizData.questions[qIndex];
+                  subq.options.forEach((opt, optIndex) => {
+                    const optionContainer = document.createElement("div");
+                    optionContainer.classList.add("flex", "items-center", "mb-1");
 
-          if (q.subquestions) {
-            for (let subIndex = 0; subIndex < q.subquestions.length; subIndex++) {
-              const subq = q.subquestions[subIndex];
-              const selected = document.querySelector(
-                `input[name="q${qIndex}_sub${subIndex}"]:checked`
-              );
-              const optIndex = parseInt(selected.value);
-              const personaList = subq.persona[optIndex] || [];
-              personaList.forEach((persona) => {
-                scores[persona] += 1;
-              });
-            }
-          } else {
-            const isMultiple = q.instructions && q.instructions.toLowerCase().includes("alle opties");
-            if (isMultiple) {
-              const checkedOptions = document.querySelectorAll(`input[name="q${qIndex}"]:checked`);
-              checkedOptions.forEach((option) => {
-                const optIndex = parseInt(option.value);
-                const personaList = q.persona[optIndex] || [];
-                personaList.forEach((persona) => {
-                  scores[persona] += 1;
+                    const input = document.createElement("input");
+                    input.type = "radio";
+                    input.name = `q${qIndex}_sub${subIndex}`;
+                    input.value = optIndex;
+                    input.id = `q${qIndex}_sub${subIndex}_opt${optIndex}`;
+                    input.classList.add("mr-2");
+
+                    const label = document.createElement("label");
+                    label.htmlFor = input.id;
+                    label.innerText = opt;
+                    label.classList.add("cursor-pointer");
+
+                    optionContainer.appendChild(input);
+                    optionContainer.appendChild(label);
+                    subContainer.appendChild(optionContainer);
+                  });
+                  questionContainer.appendChild(subContainer);
                 });
-              });
-            } else {
-              const selected = document.querySelector(`input[name="q${qIndex}"]:checked`);
-              const optIndex = parseInt(selected.value);
-              const personaList = q.persona[optIndex] || [];
-              personaList.forEach((persona) => {
-                scores[persona] += 1;
-              });
-            }
-          }
-        }
+              } else {
+                const isMultiple =
+                  q.instructions &&
+                  q.instructions.toLowerCase().includes("alle opties");
 
-        // Bepaal de hoogste score en verzamel de top persona's
-        let maxScore = 0;
-        for (let key in scores) {
-          if (scores[key] > maxScore) {
-            maxScore = scores[key];
-          }
-        }
-        const topPersonas = [];
-        for (let key in scores) {
-          if (scores[key] === maxScore) {
-            topPersonas.push(key);
-          }
-        }
+                q.options.forEach((opt, optIndex) => {
+                  const optionContainer = document.createElement("div");
+                  optionContainer.classList.add("flex", "items-center", "mb-1");
 
-        // Sla de resultaten globaal op voor het PDF rapport
-        window.quizResults = { topPersonas, scores };
+                  const input = document.createElement("input");
+                  input.type = isMultiple ? "checkbox" : "radio";
+                  input.name = `q${qIndex}`;
+                  input.value = optIndex;
+                  input.id = `q${qIndex}_opt${optIndex}`;
+                  input.classList.add("mr-2");
 
-        showResults(topPersonas, scores);
-      }
+                  const label = document.createElement("label");
+                  label.htmlFor = input.id;
+                  label.innerText = opt;
+                  label.classList.add("cursor-pointer");
 
-      // Toon de resultaten, inclusief een barchart voor de scores per persona en een knop voor PDF-export
-      function showResults(topPersonas, scores) {
-        const resultDiv = document.getElementById("result");
-        resultDiv.innerHTML = ""; // Maak container leeg
-        resultDiv.classList.remove("hidden");
+                  optionContainer.appendChild(input);
+                  optionContainer.appendChild(label);
+                  questionContainer.appendChild(optionContainer);
+                });
+              }
+              quizForm.appendChild(questionContainer);
+            });
 
-        const heading = document.createElement("h2");
-        heading.classList.add("text-2xl", "font-bold", "mb-4");
-        heading.innerText = "Uw AI Persona Resultaat";
-        resultDiv.appendChild(heading);
-
-        // Toon de top persona(s)
-        if (topPersonas.length === 1) {
-          const p = document.createElement("p");
-          p.classList.add("mb-4");
-          p.innerHTML = `Op basis van uw antwoorden past de volgende persona het beste bij u: <span class="font-semibold">${personaDescriptions[topPersonas[0]]}</span>`;
-          resultDiv.appendChild(p);
-        } else {
-          const p = document.createElement("p");
-          p.classList.add("mb-4");
-          p.innerHTML = `Er is sprake van een gelijke score. De volgende persona's passen even goed bij u:<br>`;
-          topPersonas.forEach((persona) => {
-            p.innerHTML += `<span class="font-semibold block mt-2">${personaDescriptions[persona]}</span>`;
-          });
-          resultDiv.appendChild(p);
-        }
-
-        // Maak een barchart voor de scores per persona
-        const barchartContainer = document.createElement("div");
-        barchartContainer.classList.add("mt-4");
-
-        // Bepaal het maximum voor de schaal
-        let globalMax = 0;
-        for (let key in scores) {
-          if (scores[key] > globalMax) {
-            globalMax = scores[key];
-          }
-        }
-
-        // Toon per persona een label en een balk
-        for (let persona in scores) {
-          const score = scores[persona];
-          const percent = globalMax > 0 ? (score / globalMax) * 100 : 0;
-
-          const barContainer = document.createElement("div");
-          barContainer.classList.add("mb-4");
-
-          // Label en score aan de bovenkant
-          const labelContainer = document.createElement("div");
-          labelContainer.classList.add("flex", "justify-between", "mb-1");
-          const labelSpan = document.createElement("span");
-          labelSpan.classList.add("font-semibold");
-          labelSpan.innerText = persona;
-          const scoreSpan = document.createElement("span");
-          scoreSpan.classList.add("font-semibold");
-          scoreSpan.innerText = score;
-          labelContainer.appendChild(labelSpan);
-          labelContainer.appendChild(scoreSpan);
-          barContainer.appendChild(labelContainer);
-
-          // Achtergrondbalk en voorgrondbalk
-          const barBackground = document.createElement("div");
-          barBackground.classList.add("w-full", "bg-gray-300", "h-4", "rounded");
-          const barFill = document.createElement("div");
-          barFill.classList.add("bg-blue-600", "h-4", "rounded");
-          barFill.style.width = percent + "%";
-          barBackground.appendChild(barFill);
-          barContainer.appendChild(barBackground);
-
-          barchartContainer.appendChild(barContainer);
-        }
-        resultDiv.appendChild(barchartContainer);
-
-        // Voeg een knop toe om het PDF rapport te genereren
-        const pdfBtn = document.createElement("button");
-        pdfBtn.innerText = "Download PDF rapport";
-        pdfBtn.classList.add(
-          "mt-6",
-          "bg-purple-600",
-          "text-white",
-          "px-4",
-          "py-2",
-          "rounded",
-          "hover:bg-purple-700",
-          "mr-4"
-        );
-        pdfBtn.addEventListener("click", generatePDF);
-        resultDiv.appendChild(pdfBtn);
-
-        // Knop om opnieuw te starten
-        const restartBtn = document.createElement("button");
-        restartBtn.innerText = "Opnieuw beginnen";
-        restartBtn.classList.add(
-          "mt-6",
-          "bg-green-600",
-          "text-white",
-          "px-4",
-          "py-2",
-          "rounded",
-          "hover:bg-green-700"
-        );
-        restartBtn.addEventListener("click", () => {
-          document.getElementById("quizForm").reset();
-          resultDiv.classList.add("hidden");
-          window.scrollTo(0, 0);
-        });
-        resultDiv.appendChild(restartBtn);
-        resultDiv.scrollIntoView({ behavior: "smooth" });
-      }
-
-      // Genereer het PDF rapport op basis van de quizresultaten en achtergrondinformatie
-      function generatePDF() {
-        // Extra: Haal het antwoord op van de vraag over AI-ondersteuning door uw organisatie (vraag index 2)
-        const orgInput = document.querySelector(`input[name="q2"]:checked`);
-        const orgAnswer = orgInput
-          ? quizData.questions[2].options[parseInt(orgInput.value)]
-          : "Geen antwoord";
-
-        // Bouw de HTML-content voor het rapport op
-        const pdfContent = document.createElement("div");
-        pdfContent.style.padding = "20px";
-        pdfContent.style.fontFamily = "Arial, sans-serif";
-        pdfContent.innerHTML = `
-        <div class="p-6 bg-white rounded shadow max-w-2xl mx-auto">
-          <h1 class="text-3xl font-bold mb-4" style="text-align: center;">AI Persona Quiz Rapport</h1>
-          <p><strong>Naam:</strong> ${window.userFirstName || ""}</p>
-          ${
-            window.quizResults.topPersonas.length === 1
-              ? `<p>Uw AI Persona is <strong>${window.quizResults.topPersonas[0]}</strong>.</p>`
-              : `<p>Er is sprake van een gelijke score. Uw resultaten duiden op de volgende persona's: <strong>${window.quizResults.topPersonas.join(", ")}</strong>.</p>`
-          }
-          <br>
-          <h3 class="text-xl font-bold mb-4">Scores per Persona</h3>
-          <ul>
-            ${Object.keys(window.quizResults.scores)
-              .map(
-                (persona) =>
-                  `<li><strong>${persona}</strong>: ${window.quizResults.scores[persona]} punt(en)</li>`
-              )
-              .join("")}
-          </ul>
-          <br>
-          <h3 class="text-xl font-bold mb-4">Ondersteuning van AI door uw organisatie</h3>
-          <p>Uw organisatie ondersteunt het gebruik van AI als volgt: <strong>${orgAnswer}</strong>.</p>
-          <br>
-          <p>${reportBackground}</p>
-        </div>
-        `;
-
-        // Maak een tijdelijk element aan waarin de inhoud geplaatst wordt
-        const tempDiv = document.createElement("div");
-        tempDiv.style.position = "absolute";
-        tempDiv.style.left = "-9999px";
-        tempDiv.appendChild(pdfContent);
-        document.body.appendChild(tempDiv);
-
-        // Configureer de opties voor html2pdf en genereer de PDF
-        const opt = {
-          margin: 0.5,
-          filename: `${window.userFirstName}_AI_Persona_Rapport.pdf`,
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+            const submitBtn = document.createElement("button");
+            submitBtn.type = "submit";
+            submitBtn.innerText = "Resultaten Berekenen";
+            submitBtn.classList.add(
+              "bg-blue-600",
+              "text-white",
+              "px-4",
+              "py-2",
+              "rounded",
+              "hover:bg-blue-700"
+            );
+            quizForm.appendChild(submitBtn);
+          },
         };
 
-        html2pdf()
-          .set(opt)
-          .from(pdfContent)
-          .save()
-          .then(() => {
-            // Verwijder het tijdelijke element na het genereren van de PDF
-            document.body.removeChild(tempDiv);
-          });
-      }
+        // Module: QuizValidator
+        const QuizValidator = {
+          validateQuiz: function () {
+            let allAnswered = true;
+            // Valideer naamveld
+            const firstNameInput = document.getElementById("firstName");
+            const firstName = firstNameInput.value.trim();
+            if (firstName === "" || firstName.split(/\s+/).length > 1) {
+              const error = document.createElement("p");
+              error.classList.add(
+                "error-message",
+                "text-red-600",
+                "mt-1",
+                "text-sm"
+              );
+              error.innerText =
+                "✱ Vul alstublieft alleen uw voornaam in vanwege privacy.";
+              document.getElementById("name-container").appendChild(error);
+              allAnswered = false;
+            } else {
+              window.userFirstName = firstName;
+            }
+            // Valideer elke vraag
+            QuizData.questions.forEach((q, qIndex) => {
+              if (q.subquestions) {
+                q.subquestions.forEach((subq, subIndex) => {
+                  const selected = document.querySelector(
+                    `input[name="q${qIndex}_sub${subIndex}"]:checked`
+                  );
+                  if (!selected) {
+                    const subContainer = document.getElementById(
+                      `question-${qIndex}-sub-${subIndex}`
+                    );
+                    const error = document.createElement("p");
+                    error.classList.add(
+                      "error-message",
+                      "text-red-600",
+                      "mt-1",
+                      "text-sm"
+                    );
+                    error.innerText =
+                      "✱ Vul alstublieft een antwoord in voor deze vraag.";
+                    subContainer.appendChild(error);
+                    allAnswered = false;
+                  }
+                });
+              } else {
+                const isMultiple =
+                  q.instructions &&
+                  q.instructions.toLowerCase().includes("alle opties");
+                if (isMultiple) {
+                  const checkedOptions = document.querySelectorAll(
+                    `input[name="q${qIndex}"]:checked`
+                  );
+                  if (checkedOptions.length === 0) {
+                    const questionContainer = document.getElementById(
+                      `question-${qIndex}`
+                    );
+                    const error = document.createElement("p");
+                    error.classList.add(
+                      "error-message",
+                      "text-red-600",
+                      "mt-1",
+                      "text-sm"
+                    );
+                    error.innerText =
+                      "✱ Vul alstublieft een antwoord in voor deze vraag.";
+                    questionContainer.appendChild(error);
+                    allAnswered = false;
+                  }
+                } else {
+                  const selected = document.querySelector(
+                    `input[name="q${qIndex}"]:checked`
+                  );
+                  if (!selected) {
+                    const questionContainer = document.getElementById(
+                      `question-${qIndex}`
+                    );
+                    const error = document.createElement("p");
+                    error.classList.add(
+                      "error-message",
+                      "text-red-600",
+                      "mt-1",
+                      "text-sm"
+                    );
+                    error.innerText =
+                      "✱ Vul alstublieft een antwoord in voor deze vraag.";
+                    questionContainer.appendChild(error);
+                    allAnswered = false;
+                  }
+                }
+              }
+            });
+            if (!allAnswered) {
+              const firstError = document.querySelector(".error-message");
+              if (firstError) {
+                firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+              }
+            }
+            return allAnswered;
+          },
+        };
 
-      // Zorg dat de quiz gerenderd wordt zodra de pagina geladen is
-      document.addEventListener("DOMContentLoaded", () => {
-        renderQuiz();
-        document
-          .getElementById("quizForm")
-          .addEventListener("submit", calculateResults);
-      });
+        // Module: QuizCalculator
+        const QuizCalculator = {
+          calculateScores: function () {
+            const scores = {
+              Maximalist: 0,
+              Underground: 0,
+              Rebel: 0,
+              Superfan: 0,
+              Observer: 0,
+            };
+            QuizData.questions.forEach((q, qIndex) => {
+              if (q.subquestions) {
+                q.subquestions.forEach((subq, subIndex) => {
+                  const selected = document.querySelector(
+                    `input[name="q${qIndex}_sub${subIndex}"]:checked`
+                  );
+                  const optIndex = parseInt(selected.value);
+                  const personaList = subq.persona[optIndex] || [];
+                  personaList.forEach((persona) => {
+                    scores[persona] += 1;
+                  });
+                });
+              } else {
+                const isMultiple =
+                  q.instructions && q.instructions.toLowerCase().includes("alle opties");
+                if (isMultiple) {
+                  const checkedOptions = document.querySelectorAll(
+                    `input[name="q${qIndex}"]:checked`
+                  );
+                  checkedOptions.forEach((option) => {
+                    const optIndex = parseInt(option.value);
+                    const personaList = q.persona[optIndex] || [];
+                    personaList.forEach((persona) => {
+                      scores[persona] += 1;
+                    });
+                  });
+                } else {
+                  const selected = document.querySelector(
+                    `input[name="q${qIndex}"]:checked`
+                  );
+                  const optIndex = parseInt(selected.value);
+                  const personaList = q.persona[optIndex] || [];
+                  personaList.forEach((persona) => {
+                    scores[persona] += 1;
+                  });
+                }
+              }
+            });
+            return scores;
+          },
+          calculateTopPersonas: function (scores) {
+            let maxScore = 0;
+            for (let key in scores) {
+              if (scores[key] > maxScore) {
+                maxScore = scores[key];
+              }
+            }
+            const topPersonas = [];
+            for (let key in scores) {
+              if (scores[key] === maxScore) {
+                topPersonas.push(key);
+              }
+            }
+            return topPersonas;
+          },
+        };
+
+        // Module: ResultRenderer
+        const ResultRenderer = {
+          renderResults: function (topPersonas, scores) {
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = "";
+            resultDiv.classList.remove("hidden");
+
+            const heading = document.createElement("h2");
+            heading.classList.add("text-2xl", "font-bold", "mb-4");
+            heading.innerText = "Uw AI Persona Resultaat";
+            resultDiv.appendChild(heading);
+
+            if (topPersonas.length === 1) {
+              const p = document.createElement("p");
+              p.classList.add("mb-4");
+              p.innerHTML = `Op basis van uw antwoorden past de volgende persona het beste bij u: <span class="font-semibold">${PersonaDescriptions[topPersonas[0]]}</span>`;
+              resultDiv.appendChild(p);
+            } else {
+              const p = document.createElement("p");
+              p.classList.add("mb-4");
+              p.innerHTML = `Er is sprake van een gelijke score. De volgende persona's passen even goed bij u:<br>`;
+              topPersonas.forEach((persona) => {
+                p.innerHTML += `<span class="font-semibold block mt-2">${PersonaDescriptions[persona]}</span>`;
+              });
+              resultDiv.appendChild(p);
+            }
+
+            const barchartContainer = document.createElement("div");
+            barchartContainer.classList.add("mt-4");
+
+            let globalMax = 0;
+            for (let key in scores) {
+              if (scores[key] > globalMax) {
+                globalMax = scores[key];
+              }
+            }
+
+            for (let persona in scores) {
+              const score = scores[persona];
+              const percent = globalMax > 0 ? (score / globalMax) * 100 : 0;
+
+              const barContainer = document.createElement("div");
+              barContainer.classList.add("mb-4");
+
+              const labelContainer = document.createElement("div");
+              labelContainer.classList.add("flex", "justify-between", "mb-1");
+              const labelSpan = document.createElement("span");
+              labelSpan.classList.add("font-semibold");
+              labelSpan.innerText = persona;
+              const scoreSpan = document.createElement("span");
+              scoreSpan.classList.add("font-semibold");
+              scoreSpan.innerText = score;
+              labelContainer.appendChild(labelSpan);
+              labelContainer.appendChild(scoreSpan);
+              barContainer.appendChild(labelContainer);
+
+              const barBackground = document.createElement("div");
+              barBackground.classList.add("w-full", "bg-gray-300", "h-4", "rounded");
+              const barFill = document.createElement("div");
+              barFill.classList.add("bg-blue-600", "h-4", "rounded");
+              barFill.style.width = percent + "%";
+              barBackground.appendChild(barFill);
+              barContainer.appendChild(barBackground);
+
+              barchartContainer.appendChild(barContainer);
+            }
+            resultDiv.appendChild(barchartContainer);
+
+            const pdfBtn = document.createElement("button");
+            pdfBtn.innerText = "Download PDF rapport";
+            pdfBtn.classList.add(
+              "mt-6",
+              "bg-purple-600",
+              "text-white",
+              "px-4",
+              "py-2",
+              "rounded",
+              "hover:bg-purple-700",
+              "mr-4"
+            );
+            pdfBtn.addEventListener("click", PDFGenerator.generatePDF);
+            resultDiv.appendChild(pdfBtn);
+
+            const restartBtn = document.createElement("button");
+            restartBtn.innerText = "Opnieuw beginnen";
+            restartBtn.classList.add(
+              "mt-6",
+              "bg-green-600",
+              "text-white",
+              "px-4",
+              "py-2",
+              "rounded",
+              "hover:bg-green-700"
+            );
+            restartBtn.addEventListener("click", () => {
+              document.getElementById("quizForm").reset();
+              resultDiv.classList.add("hidden");
+              window.scrollTo(0, 0);
+            });
+            resultDiv.appendChild(restartBtn);
+            resultDiv.scrollIntoView({ behavior: "smooth" });
+          },
+        };
+
+        // Module: PDFGenerator
+        const PDFGenerator = {
+          generatePDF: function () {
+            // Extra: Haal het antwoord op van de vraag over AI-ondersteuning door uw organisatie (vraag index 2)
+            const orgInput = document.querySelector(`input[name="q2"]:checked`);
+            const orgAnswer = orgInput
+              ? QuizData.questions[2].options[parseInt(orgInput.value)]
+              : "Geen antwoord";
+
+            const pdfContent = document.createElement("div");
+            pdfContent.style.padding = "20px";
+            pdfContent.style.fontFamily = "Arial, sans-serif";
+            pdfContent.innerHTML = `
+          <div class="p-6 bg-white rounded shadow max-w-2xl mx-auto">
+            <h1 class="text-3xl font-bold mb-4" style="text-align: center;">AI Persona Quiz Rapport</h1>
+            <p><strong>Naam:</strong> ${window.userFirstName || ""}</p>
+            ${
+              window.quizResults.topPersonas.length === 1
+                ? `<p>Uw AI Persona is <strong>${window.quizResults.topPersonas[0]}</strong>.</p>`
+                : `<p>Er is sprake van een gelijke score. Uw resultaten duiden op de volgende persona's: <strong>${window.quizResults.topPersonas.join(", ")}</strong>.</p>`
+            }
+            <br>
+            <h3 class="text-xl font-bold mb-4">Scores per Persona</h3>
+            <ul>
+              ${Object.keys(window.quizResults.scores)
+                .map(
+                  (persona) =>
+                    `<li><strong>${persona}</strong>: ${window.quizResults.scores[persona]} punt(en)</li>`
+                )
+                .join("")}
+            </ul>
+            <br>
+            <h3 class="text-xl font-bold mb-4">Ondersteuning van AI door uw organisatie</h3>
+            <p>Uw organisatie ondersteunt het gebruik van AI als volgt: <strong>${orgAnswer}</strong>.</p>
+            <br>
+            <p>${ReportBackground}</p>
+          </div>
+          `;
+
+            const tempDiv = document.createElement("div");
+            tempDiv.style.position = "absolute";
+            tempDiv.style.left = "-9999px";
+            tempDiv.appendChild(pdfContent);
+            document.body.appendChild(tempDiv);
+
+            const opt = {
+              margin: 0.5,
+              filename: `${window.userFirstName}_AI_Persona_Rapport.pdf`,
+              image: { type: "jpeg", quality: 0.98 },
+              html2canvas: { scale: 2 },
+              jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+            };
+
+            html2pdf()
+              .set(opt)
+              .from(pdfContent)
+              .save()
+              .then(() => {
+                document.body.removeChild(tempDiv);
+              });
+          },
+        };
+
+        // Module: QuizController (init en event-handling)
+        const QuizController = {
+          init: function () {
+            QuizRenderer.renderQuiz();
+            document
+              .getElementById("quizForm")
+              .addEventListener("submit", (event) => {
+                event.preventDefault();
+                // Verwijder eventuele oude foutmeldingen
+                document.querySelectorAll(".error-message").forEach((el) => el.remove());
+                if (QuizValidator.validateQuiz()) {
+                  const scores = QuizCalculator.calculateScores();
+                  const topPersonas = QuizCalculator.calculateTopPersonas(scores);
+                  window.quizResults = { topPersonas, scores };
+                  ResultRenderer.renderResults(topPersonas, scores);
+                }
+              });
+          },
+        };
+
+        // Init de quiz wanneer de DOM geladen is
+        document.addEventListener("DOMContentLoaded", QuizController.init);
+      })();
     </script>
   </body>
 </html>
