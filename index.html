@@ -12,6 +12,9 @@
   <body class="bg-gray-100 text-gray-800">
     <div class="container mx-auto p-6">
       <h1 class="text-3xl font-bold mb-6 text-center">AI Persona Quiz</h1>
+      <p id="intro" class="space-y-8 bg-white p-6">
+        Het doel van deze quiz is u inzicht te geven in uw persoonlijke AI-profiel. Door te vergelijken met collega's binnen uw team of afdeling ontstaat een beeld van de uiteenlopende behoeften. Met dit inzicht kunnen betere afwegingen worden gemaakt bij implementaties van AI op de werkvloer.
+      </p>
       <form id="quizForm" class="space-y-8 bg-white p-6 rounded shadow">
         <!-- Naamveld en quizvragen worden dynamisch toegevoegd -->
       </form>
@@ -23,7 +26,8 @@
       const quizData = {
         questions: [
           {
-            question: "In hoeverre bent u het eens of oneens met de volgende uitspraken over AI?",
+            question:
+              "In hoeverre bent u het eens of oneens met de volgende uitspraken over AI?",
             instructions: "Selecteer één optie per vraag.",
             subquestions: [
               {
@@ -62,7 +66,8 @@
             ],
           },
           {
-            question: "Welke van de volgende uitspraken weerspiegelt het best uw visie op de potentiële impact van AI op de samenleving?",
+            question:
+              "Welke van de volgende uitspraken weerspiegelt het best uw visie op de potentiële impact van AI op de samenleving?",
             options: [
               "AI vormt een bedreiging zonder voordelen",
               "AI is voornamelijk een bedreiging, maar heeft enkele voordelen",
@@ -79,7 +84,8 @@
             ],
           },
           {
-            question: "In welke mate ondersteunt uw organisatie het gebruik van AI bij werkgerelateerde taken?",
+            question:
+              "In welke mate ondersteunt uw organisatie het gebruik van AI bij werkgerelateerde taken?",
             options: [
               "AI-gebruik wordt actief aangemoedigd in alle vormen",
               "AI-gebruik wordt aangemoedigd, maar binnen vastgestelde richtlijnen",
@@ -91,7 +97,8 @@
             persona: [[], [], [], [], [], []],
           },
           {
-            question: "Deelt u uw gebruik van AI met collega's op de werkvloer?",
+            question:
+              "Deelt u uw gebruik van AI met collega's op de werkvloer?",
             options: [
               "Ja, en ik moedig anderen actief aan om AI te gebruiken",
               "Ja, ik vermeld het regelmatig, maar probeer anderen niet te beïnvloeden",
@@ -108,7 +115,8 @@
             ],
           },
           {
-            question: "Hoe enthousiast of bezorgd bent u over de mogelijkheid dat AI en automatisering taken in uw huidige functie vervangen?",
+            question:
+              "Hoe enthousiast of bezorgd bent u over de mogelijkheid dat AI en automatisering taken in uw huidige functie vervangen?",
             options: [
               "Zeer enthousiast",
               "Enigszins enthousiast",
@@ -145,14 +153,15 @@
             ],
           },
           {
-            question: "Welke van de volgende beschrijvingen komt het beste overeen met uw motivatie om AI op het werk te gebruiken?",
+            question:
+              "Welke van de volgende beschrijvingen komt het beste overeen met uw motivatie om AI op het werk te gebruiken?",
             options: [
               "Ik wil meer tijd vrijmaken voor strategische of creatieve werkzaamheden",
               "Ik wil mijn capaciteit vergroten om meer werk te verzetten",
               "Ik wil minder werk doen",
               "Ik wil werk van hogere kwaliteit produceren",
               "Niet van toepassing - ik ben niet gemotiveerd om AI op het werk te gebruiken",
-              "Anders (specificeer)",
+              "Anders",
             ],
             persona: [
               ["Superfan"],
@@ -160,11 +169,12 @@
               ["Observer"],
               ["Maximalist"],
               ["Rebel", "Observer"],
-              ["Rebel"],
+              [],
             ],
           },
           {
-            question: "Hoe vaak gebruikt u AI-tools voor werkgerelateerde taken?",
+            question:
+              "Hoe vaak gebruikt u AI-tools voor werkgerelateerde taken?",
             options: [
               "Dagelijks",
               "Een paar keer per week",
@@ -271,7 +281,8 @@
             if (q.instructions.includes("Selecteer één optie per vraag")) {
               const mappingText = document.createElement("p");
               mappingText.classList.add("text-sm", "text-gray-600", "mb-4");
-              mappingText.innerText = "1 = Helemaal oneens, 2 = Oneens, 3 = Neutraal, 4 = Eens, 5 = Helemaal eens";
+              mappingText.innerText =
+                "1 = Helemaal oneens, 2 = Oneens, 3 = Neutraal, 4 = Eens, 5 = Helemaal eens";
               questionContainer.appendChild(mappingText);
             }
           }
@@ -389,9 +400,13 @@
           if (q.subquestions) {
             // Controleer elke subvraag
             for (let subIndex = 0; subIndex < q.subquestions.length; subIndex++) {
-              const selected = document.querySelector(`input[name="q${qIndex}_sub${subIndex}"]:checked`);
+              const selected = document.querySelector(
+                `input[name="q${qIndex}_sub${subIndex}"]:checked`
+              );
               if (!selected) {
-                const subContainer = document.getElementById(`question-${qIndex}-sub-${subIndex}`);
+                const subContainer = document.getElementById(
+                  `question-${qIndex}-sub-${subIndex}`
+                );
                 const error = document.createElement("p");
                 error.classList.add("error-message", "text-red-600", "mt-1", "text-sm");
                 error.innerText = "✱ Vul alstublieft een antwoord in voor deze vraag.";
@@ -401,7 +416,9 @@
             }
           } else {
             // Controleer normale vraag
-            const isMultiple = q.instructions && q.instructions.toLowerCase().includes("alle opties");
+            const isMultiple =
+              q.instructions &&
+              q.instructions.toLowerCase().includes("alle opties");
             if (isMultiple) {
               const checkedOptions = document.querySelectorAll(`input[name="q${qIndex}"]:checked`);
               if (checkedOptions.length === 0) {
@@ -450,7 +467,9 @@
           if (q.subquestions) {
             for (let subIndex = 0; subIndex < q.subquestions.length; subIndex++) {
               const subq = q.subquestions[subIndex];
-              const selected = document.querySelector(`input[name="q${qIndex}_sub${subIndex}"]:checked`);
+              const selected = document.querySelector(
+                `input[name="q${qIndex}_sub${subIndex}"]:checked`
+              );
               const optIndex = parseInt(selected.value);
               const personaList = subq.persona[optIndex] || [];
               personaList.forEach((persona) => {
@@ -611,6 +630,12 @@
 
       // Genereer het PDF rapport op basis van de quizresultaten en achtergrondinformatie
       function generatePDF() {
+        // Extra: Haal het antwoord op van de vraag over AI-ondersteuning door uw organisatie (vraag index 2)
+        const orgInput = document.querySelector(`input[name="q2"]:checked`);
+        const orgAnswer = orgInput
+          ? quizData.questions[2].options[parseInt(orgInput.value)]
+          : "Geen antwoord";
+
         // Bouw de HTML-content voor het rapport op
         const pdfContent = document.createElement("div");
         pdfContent.style.padding = "20px";
@@ -624,7 +649,7 @@
               ? `<p>Uw AI Persona is <strong>${window.quizResults.topPersonas[0]}</strong>.</p>`
               : `<p>Er is sprake van een gelijke score. Uw resultaten duiden op de volgende persona's: <strong>${window.quizResults.topPersonas.join(", ")}</strong>.</p>`
           }
-          <br>       
+          <br>
           <h3 class="text-xl font-bold mb-4">Scores per Persona</h3>
           <ul>
             ${Object.keys(window.quizResults.scores)
@@ -634,6 +659,9 @@
               )
               .join("")}
           </ul>
+          <br>
+          <h3 class="text-xl font-bold mb-4">Ondersteuning van AI door uw organisatie</h3>
+          <p>Uw organisatie ondersteunt het gebruik van AI als volgt: <strong>${orgAnswer}</strong>.</p>
           <br>
           <p>${reportBackground}</p>
         </div>
@@ -668,7 +696,9 @@
       // Zorg dat de quiz gerenderd wordt zodra de pagina geladen is
       document.addEventListener("DOMContentLoaded", () => {
         renderQuiz();
-        document.getElementById("quizForm").addEventListener("submit", calculateResults);
+        document
+          .getElementById("quizForm")
+          .addEventListener("submit", calculateResults);
       });
     </script>
   </body>
