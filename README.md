@@ -33,10 +33,7 @@ Dit project is een eenvoudige webapplicatie die een quiz aanbiedt om inzicht te 
 
 ## Installatie en Gebruik
 
-1. **Download of clone deze repository**  
-   ```bash
-   git clone https://github.com/<uw-gebruikersnaam>/<naam-van-de-repo>.git
-   ```
+1. **Download of clone deze repository** 
    
 2. **Open de quiz**  
    - Open het bestand `index.html` (of de HTML-bestandsnaam in de repo) in uw webbrowser.
