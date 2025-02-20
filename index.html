@@ -4,30 +4,79 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI Persona Quiz</title>
-    <!-- Tailwind CSS via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Materialize CSS via CDN -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+      rel="stylesheet"
+    />
     <!-- html2pdf.js via CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <style>
+      /* Increase font size of input field label */
+      .input-field label {
+        font-size: 1.2rem;
+      }
+      /* Highlight a selected option */
+      .selected-option {
+        background-color: #e0f7fa;
+      }
+      /* Hide all steps by default */
+      .quiz-step {
+        display: none;
+      }
+      /* Only the active step is displayed */
+      .quiz-step.active {
+        display: block;
+      }
+      /* Make font color more readable */
+      .quiz-step label span {
+        color: #626262;
+      }
+      /* Inline error styling */
+      .step-error {
+        color: #d32f2f;
+        font-size: 0.9em;
+        margin-top: 8px;
+      }
+    </style>
   </head>
-  <body class="bg-gray-100 text-gray-800">
-    <div class="container mx-auto p-6">
-      <h1 class="text-3xl font-bold mb-6 text-center">AI Persona Quiz</h1>
-      <p id="intro" class="space-y-8 bg-white p-6">
-        Het doel van deze quiz is u inzicht te geven in uw persoonlijke AI-profiel. Door te vergelijken met collega's binnen uw team of afdeling ontstaat een beeld van de uiteenlopende behoeften. Met dit inzicht kunnen betere afwegingen worden gemaakt bij implementaties van AI op de werkvloer.
-      </p>
-      <form id="quizForm" class="space-y-8 bg-white p-6 rounded shadow">
-        <!-- Naamveld en quizvragen worden dynamisch toegevoegd -->
+  <body class="grey lighten-4 black-text">
+    <div class="container section">
+      <h3 class="center-align">AI Persona Quiz</h3>
+      <div id="intro" class="card-panel">
+        Het doel van deze quiz is u inzicht te geven in uw persoonlijke AI‐profiel.
+        Door te vergelijken met collega's binnen uw team of afdeling ontstaat een beeld van
+        de uiteenlopende behoeften. Met dit inzicht kunnen betere afwegingen worden
+        gemaakt bij implementaties van AI op de werkvloer.
+      </div>
+      <form id="quizForm" class="card-panel" aria-label="AI Persona Quiz">
+        <!-- Progress Bar -->
+        <div class="progress">
+          <div id="progressBar" class="determinate" style="width: 0%"></div>
+        </div>
+        <!-- Steps Container -->
+        <div id="stepsContainer"></div>
+        <!-- Navigation Buttons -->
+        <div id="navButtons" class="section center-align" style="margin-top:16px;">
+          <button type="button" id="prevBtn" class="btn grey" aria-label="Vorige vraag" style="display:none; margin-right: 8px;">Vorige</button>
+          <button type="button" id="nextBtn" class="btn blue" aria-label="Volgende vraag">Volgende</button>
+        </div>
       </form>
-      <div id="result" class="mt-8 p-6 bg-white rounded shadow hidden"></div>
+      <div id="result" class="card-panel hide" style="margin-top:16px;"></div>
     </div>
 
     <script>
       (function () {
-        // Data module
-        const QuizData = {
+        // Global variable for current step
+        let currentStep = 0;
+        const totalSteps = () => quizData.questions.length + 1; // step 0 for name
+
+        // Quiz Data (unchanged)
+        const quizData = {
           questions: [
             {
-              question: "In hoeverre bent u het eens of oneens met de volgende uitspraken over AI?",
+              question:
+                "In hoeverre bent u het eens of oneens met de volgende uitspraken over AI?",
               instructions: "Selecteer één optie per vraag.",
               subquestions: [
                 {
@@ -45,10 +94,10 @@
                   text: "Ik maak me zorgen dat AI mijn baan zal vervangen",
                   options: [1, 2, 3, 4, 5],
                   persona: [
-                    ["Maximalist", "Superfan"],
+                    ["Maximalist"],
                     ["Superfan", "Underground"],
+                    ["Underground"],
                     ["Observer"],
-                    ["Underground", "Observer"],
                     ["Rebel"],
                   ],
                 },
@@ -58,9 +107,9 @@
                   persona: [
                     ["Rebel"],
                     ["Observer"],
-                    ["Underground"],
-                    ["Superfan"],
-                    ["Maximalist"],
+                    ["Observer", "Underground"],
+                    ["Superfan", "Underground"],
+                    ["Underground", "Maximalist"],
                   ],
                 },
               ],
@@ -77,8 +126,8 @@
               ],
               persona: [
                 ["Rebel"],
-                ["Rebel", "Observer"],
-                ["Superfan", "Underground"],
+                ["Observer"],
+                ["Superfan", "Underground", "Maximalist"],
                 ["Maximalist"],
                 ["Observer"],
               ],
@@ -107,9 +156,9 @@
               ],
               persona: [
                 ["Maximalist", "Superfan"],
-                ["Maximalist", "Superfan"],
+                ["Superfan"],
                 ["Underground"],
-                ["Underground", "Rebel"],
+                ["Underground"],
                 ["Observer", "Rebel"],
               ],
             },
@@ -124,10 +173,10 @@
                 "Zeer bezorgd",
               ],
               persona: [
-                ["Maximalist"],
-                ["Superfan"],
+                ["Maximalist", "Underground"],
+                ["Superfan", "Observer"],
                 ["Observer"],
-                ["Underground"],
+                ["Observer"],
                 ["Rebel"],
               ],
             },
@@ -138,22 +187,23 @@
                 "Enthousiast",
                 "Bezorgd",
                 "Schuldig",
-                "Opgelucht",
+                "Opgewonden",
                 "Onverschillig",
                 "Aarzelend",
               ],
               persona: [
-                ["Maximalist", "Superfan"],
+                ["Maximalist", "Superfan", "Underground"],
                 ["Rebel", "Observer"],
-                ["Underground"],
-                ["Maximalist"],
-                ["Observer", "Underground"],
-                ["Rebel"],
+                ["Observer"],
+                ["Maximalist", "Underground"],
+                ["Observer"],
+                ["Rebel", "Observer"],
               ],
             },
             {
               question:
                 "Welke van de volgende beschrijvingen komt het beste overeen met uw motivatie om AI op het werk te gebruiken?",
+              instructions: "Selecteer alle opties die van toepassing zijn.",
               options: [
                 "Ik wil meer tijd vrijmaken voor strategische of creatieve werkzaamheden",
                 "Ik wil mijn capaciteit vergroten om meer werk te verzetten",
@@ -163,11 +213,11 @@
                 "Anders",
               ],
               persona: [
-                ["Superfan"],
-                ["Underground"],
-                ["Observer"],
-                ["Maximalist"],
-                ["Rebel", "Observer"],
+                ["Maximalist", "Underground", "Superfan", "Observer"],
+                ["Maximalist", "Underground", "Superfan", "Observer"],
+                ["Maximalist", "Underground", "Superfan", "Observer"],
+                ["Maximalist", "Underground", "Superfan", "Observer"],
+                ["Rebel"],
                 [],
               ],
             },
@@ -184,12 +234,12 @@
                 "Ik heb ze slechts één of twee keer getest",
               ],
               persona: [
-                ["Maximalist"],
-                ["Underground"],
+                ["Maximalist", "Underground"],
+                ["Maximalist", "Underground"],
+                ["Superfan"],
                 ["Superfan"],
                 ["Superfan"],
                 ["Observer"],
-                ["Superfan"],
                 ["Rebel"],
                 ["Observer"],
               ],
@@ -197,7 +247,16 @@
           ],
         };
 
-        const PersonaDescriptions = {
+        // Likert scale mapping for numeric options
+        const likertMapping = {
+          1: "Helemaal oneens",
+          2: "Oneens",
+          3: "Neutraal",
+          4: "Eens",
+          5: "Helemaal eens"
+        };
+
+        const personaDescriptions = {
           Maximalist:
             "🥰 <strong>De Maximalist</strong>: Maximalisten maken meerdere keren per week gebruik van AI om hun werk te verbeteren en spreken er met enthousiasme over.",
           Underground:
@@ -210,261 +269,260 @@
             "🧐 <strong>De Observer</strong>: Observers hebben AI nog niet geïntegreerd in hun werkzaamheden en volgen de ontwikkelingen met interesse en voorzichtigheid.",
         };
 
-        const ReportBackground = `
-  <h2 class="text-2xl font-bold mb-4">Doel en achtergrond</h2>
-  <p class="mb-4">
-    Deze tool is gebaseerd op onderzoek van Slack’s Workforce Lab. Het doel van het onderzoek was te achterhalen wat werknemers motiveert om AI te gebruiken en hoe zij de inzet van AI op de werkvloer ervaren. Door diepgaande interviews en een enquête onder 5.000 fulltime kantoormedewerkers zijn vijf onderscheidende AI-persona’s vastgesteld.
-  </p>
-  <ul class="list-disc pl-6 mb-4">
-    <li>🥰 <strong>De Maximalist</strong> (30%): Maximalisten maken meerdere keren per week gebruik van AI om hun werk te verbeteren en spreken er met enthousiasme over.</li>
-    <li>🤫 <strong>De Underground</strong> (20%): Undergrounds zijn de Maximalisten in vermomming; zij maken vaak gebruik van AI, maar aarzelen om dit met collega's te delen.</li>
-    <li>😎 <strong>De Rebel</strong> (19%): Rebellen onderschrijven de AI-hype niet. Zij vermijden het gebruik van AI en vinden het oneerlijk wanneer collega's deze tools inzetten.</li>
-    <li>🤩 <strong>De Superfan</strong> (16%): Superfans zijn enthousiast en bewonderen de vooruitgang in AI, maar benutten het potentieel op de werkvloer nog niet volledig.</li>
-    <li>🧐 <strong>De Observer</strong> (16%): Observers hebben AI nog niet geïntegreerd in hun werkzaamheden en volgen de ontwikkelingen met interesse en voorzichtigheid.</li>
-  </ul>
-  <p class="mb-6">
-    Het doel van deze quiz is u inzicht te geven in uw persoonlijke AI-profiel. Door te vergelijken met collega's binnen uw team of afdeling ontstaat een beeld van de uiteenlopende behoeften. Met dit inzicht kunnen betere afwegingen worden gemaakt bij implementaties van AI op de werkvloer.
-  </p>
-  <h3 class="text-xl font-bold mb-4">Bron</h3>
-  <div style="line-height: 2; margin-left: 2em; text-indent:-2em;">
-    <div>Slack. (n.d.). <i>AI team-building with the AI persona quiz</i>. Slack. Retrieved 4 February 2025, from <a href="https://slack.com/blog/transformation/ai-team-building-with-the-ai-personas-quiz">https://slack.com/blog/transformation/ai-team-building-with-the-ai-personas-quiz</a></div>
-  </div>
-`;
+        const reportBackground = `
+          <h5 class="center-align">Doel en achtergrond</h5>
+          <p>
+            Deze tool is gebaseerd op onderzoek van Slack’s Workforce Lab. Het doel van het onderzoek was te achterhalen wat werknemers motiveert om AI te gebruiken en hoe zij de inzet van AI op de werkvloer ervaren. Door diepgaande interviews en een enquête onder 5.000 fulltime kantoormedewerkers zijn vijf onderscheidende AI-persona’s vastgesteld.
+          </p>
+          <ul class="collection">
+            <li class="collection-item">🥰 <strong>De Maximalist</strong> (30%): Maximalisten maken meerdere keren per week gebruik van AI om hun werk te verbeteren en spreken er met enthousiasme over.</li>
+            <li class="collection-item">🤫 <strong>De Underground</strong> (20%): Undergrounds zijn de Maximalisten in vermomming; zij maken vaak gebruik van AI, maar aarzelen om dit met collega's te delen.</li>
+            <li class="collection-item">😎 <strong>De Rebel</strong> (19%): Rebellen onderschrijven de AI-hype niet. Zij vermijden het gebruik van AI en vinden het oneerlijk wanneer collega's deze tools inzetten.</li>
+            <li class="collection-item">🤩 <strong>De Superfan</strong> (16%): Superfans zijn enthousiast en bewonderen de vooruitgang in AI, maar benutten het potentieel op de werkvloer nog niet volledig.</li>
+            <li class="collection-item">🧐 <strong>De Observer</strong> (16%): Observers hebben AI nog niet geïntegreerd in hun werkzaamheden en volgen de ontwikkelingen met interesse en voorzichtigheid.</li>
+          </ul>
+          <p>
+            Het doel van deze quiz is u inzicht te geven in uw persoonlijke AI-profiel. Door te vergelijken met collega's binnen uw team of afdeling ontstaat een beeld van de uiteenlopende behoeften. Met dit inzicht kunnen betere afwegingen worden gemaakt bij implementaties van AI op de werkvloer.
+          </p>
+          <h6>Bron</h6>
+          <p style="margin-left:16px; text-indent:-16px; line-height:2;">
+            Slack. (n.d.). <i>AI team-building with the AI persona quiz</i>. Slack. Retrieved 4 February 2025, from <a href="https://slack.com/blog/transformation/ai-team-building-with-the-ai-personas-quiz">https://slack.com/blog/transformation/ai-team-building-with-the-ai-personas-quiz</a>
+          </p>
+        `;
 
-        // Module: QuizRenderer
-        const QuizRenderer = {
-          renderQuiz: function () {
-            const quizForm = document.getElementById("quizForm");
-            quizForm.innerHTML = ""; // Maak formulier leeg
+        // ------------------------------
+        // Auto-Save Functions
+        // ------------------------------
+        function saveProgress() {
+          const form = document.getElementById("quizForm");
+          let data = {};
+          const inputs = form.querySelectorAll("input");
+          inputs.forEach((input) => {
+            if (input.type === "checkbox") {
+              if (!data[input.name]) {
+                data[input.name] = [];
+              }
+              if (input.checked) {
+                data[input.name].push(input.value);
+              }
+            } else if (input.type === "radio") {
+              if (input.checked) {
+                data[input.name] = input.value;
+              }
+            } else {
+              data[input.name] = input.value;
+            }
+          });
+          const progress = {
+            currentStep: currentStep,
+            formData: data,
+          };
+          localStorage.setItem("quizAutoSave", JSON.stringify(progress));
+        }
 
-            // Voeg het naamveld toe
-            const nameContainer = document.createElement("div");
-            nameContainer.id = "name-container";
-            nameContainer.classList.add("mb-6");
-            const nameLabel = document.createElement("label");
-            nameLabel.htmlFor = "firstName";
-            nameLabel.classList.add("block", "text-lg", "font-medium", "mb-2");
-            nameLabel.innerText = "Voornaam (alleen uw voornaam vanwege privacy):";
-            const nameInput = document.createElement("input");
-            nameInput.type = "text";
-            nameInput.id = "firstName";
-            nameInput.name = "firstName";
-            nameInput.placeholder = "Vul hier uw voornaam in";
-            nameInput.classList.add("border", "p-2", "w-full");
-            nameInput.required = true;
-            nameContainer.appendChild(nameLabel);
-            nameContainer.appendChild(nameInput);
-            quizForm.appendChild(nameContainer);
-
-            // Loop door de hoofdvragen
-            QuizData.questions.forEach((q, qIndex) => {
-              const questionContainer = document.createElement("div");
-              questionContainer.id = `question-${qIndex}`;
-              questionContainer.classList.add("border-b", "pb-4", "mb-4");
-
-              // Vraagtekst en instructies
-              const questionTitle = document.createElement("h2");
-              questionTitle.classList.add("text-xl", "font-semibold", "mb-2");
-              questionTitle.innerText = q.question;
-              questionContainer.appendChild(questionTitle);
-
-              if (q.instructions) {
-                const instructions = document.createElement("p");
-                instructions.classList.add("text-sm", "text-gray-600", "mb-4");
-                instructions.innerText = q.instructions;
-                questionContainer.appendChild(instructions);
-
-                // Extra toelichting voor Likert-scale vragen
-                if (q.instructions.includes("Selecteer één optie per vraag")) {
-                  const mappingText = document.createElement("p");
-                  mappingText.classList.add("text-sm", "text-gray-600", "mb-4");
-                  mappingText.innerText =
-                    "1 = Helemaal oneens, 2 = Oneens, 3 = Neutraal, 4 = Eens, 5 = Helemaal eens";
-                  questionContainer.appendChild(mappingText);
+        function loadSavedProgress() {
+          const saved = localStorage.getItem("quizAutoSave");
+          if (saved) {
+            try {
+              const progress = JSON.parse(saved);
+              currentStep = progress.currentStep || 0;
+              const data = progress.formData || {};
+              for (let key in data) {
+                const elements = document.getElementsByName(key);
+                if (elements.length > 0) {
+                  if (elements[0].type === "checkbox") {
+                    elements.forEach((el) => {
+                      if (data[key].includes(el.value)) {
+                        el.checked = true;
+                      }
+                    });
+                  } else if (elements[0].type === "radio") {
+                    elements.forEach((el) => {
+                      if (el.value === data[key]) {
+                        el.checked = true;
+                      }
+                    });
+                  } else {
+                    elements[0].value = data[key];
+                  }
                 }
               }
+            } catch (e) {
+              console.error(e);
+            }
+          }
+        }
 
+        function clearSavedProgress() {
+          localStorage.removeItem("quizAutoSave");
+        }
+
+        // ------------------------------
+        // Quiz Renderer with Step-by-Step Navigation
+        // ------------------------------
+        const QuizRenderer = {
+          renderQuiz: function () {
+            const stepsContainer = document.getElementById("stepsContainer");
+            stepsContainer.innerHTML = "";
+
+            // Step 0: Name Input
+            const nameStep = document.createElement("div");
+            nameStep.classList.add("quiz-step");
+            nameStep.setAttribute("data-step", "0");
+            nameStep.innerHTML = `
+              <div class="input-field">
+                <input type="text" id="firstName" name="firstName" placeholder="Vul hier uw voornaam in" aria-required="true" aria-label="Voornaam" required />
+                <label for="firstName">Vul alstublieft alleen uw voornaam in om uw privacy te beschermen.</label>
+              </div>
+            `;
+            stepsContainer.appendChild(nameStep);
+
+            // Create a step for each quiz question
+            quizData.questions.forEach((q, qIndex) => {
+              const step = document.createElement("div");
+              step.classList.add("quiz-step");
+              // Step numbering: step 0 is name; question i goes to data-step=i+1
+              step.setAttribute("data-step", qIndex + 1);
+
+              let html = `<h5 class="flow-text">${q.question}</h5>`;
+              if (q.instructions) {
+                // Display instructions without the separate Likert mapping text
+                html += `<p class="grey-text small" style="margin-bottom:16px;">${q.instructions}</p>`;
+              }
               if (q.subquestions) {
                 q.subquestions.forEach((subq, subIndex) => {
-                  const subContainer = document.createElement("div");
-                  subContainer.id = `question-${qIndex}-sub-${subIndex}`;
-                  subContainer.classList.add("mb-4", "pl-4", "border-l");
-
-                  const subText = document.createElement("p");
-                  subText.classList.add("font-medium", "mb-2");
-                  subText.innerText = subq.text;
-                  subContainer.appendChild(subText);
-
+                  html += `<div id="q${qIndex}_sub_${subIndex}" style="border-left:4px solid #e0e0e0; padding-left:1rem; margin-bottom:16px;">
+                             <p style="font-weight:bold; margin-bottom:8px;">${subq.text}</p>`;
                   subq.options.forEach((opt, optIndex) => {
-                    const optionContainer = document.createElement("div");
-                    optionContainer.classList.add("flex", "items-center", "mb-1");
-
-                    const input = document.createElement("input");
-                    input.type = "radio";
-                    input.name = `q${qIndex}_sub${subIndex}`;
-                    input.value = optIndex;
-                    input.id = `q${qIndex}_sub${subIndex}_opt${optIndex}`;
-                    input.classList.add("mr-2");
-
-                    const label = document.createElement("label");
-                    label.htmlFor = input.id;
-                    label.innerText = opt;
-                    label.classList.add("cursor-pointer");
-
-                    optionContainer.appendChild(input);
-                    optionContainer.appendChild(label);
-                    subContainer.appendChild(optionContainer);
+                    // Use the index for value. For Likert-scale questions, map index+1 to a description.
+                    let optionLabel = opt;
+                    if (q.instructions && q.instructions.includes("Selecteer één optie per vraag")) {
+                      optionLabel = likertMapping[optIndex + 1];
+                    }
+                    html += `<p>
+                              <label>
+                                <input type="radio" name="q${qIndex}_sub${subIndex}" value="${optIndex}" aria-label="Optie ${optionLabel}" />
+                                <span>${optionLabel}</span>
+                              </label>
+                             </p>`;
                   });
-                  questionContainer.appendChild(subContainer);
+                  html += `</div>`;
                 });
               } else {
-                const isMultiple =
-                  q.instructions &&
-                  q.instructions.toLowerCase().includes("alle opties");
-
+                const isMultiple = q.instructions && q.instructions.toLowerCase().includes("alle opties");
                 q.options.forEach((opt, optIndex) => {
-                  const optionContainer = document.createElement("div");
-                  optionContainer.classList.add("flex", "items-center", "mb-1");
-
-                  const input = document.createElement("input");
-                  input.type = isMultiple ? "checkbox" : "radio";
-                  input.name = `q${qIndex}`;
-                  input.value = optIndex;
-                  input.id = `q${qIndex}_opt${optIndex}`;
-                  input.classList.add("mr-2");
-
-                  const label = document.createElement("label");
-                  label.htmlFor = input.id;
-                  label.innerText = opt;
-                  label.classList.add("cursor-pointer");
-
-                  optionContainer.appendChild(input);
-                  optionContainer.appendChild(label);
-                  questionContainer.appendChild(optionContainer);
+                  let optionLabel = opt;
+                  if (q.instructions && q.instructions.includes("Selecteer één optie per vraag")) {
+                    optionLabel = `${opt} – ${likertMapping[optIndex + 1]}`;
+                  }
+                  html += `<p>
+                             <label>
+                               <input type="${isMultiple ? "checkbox" : "radio"}" name="q${qIndex}" value="${optIndex}" aria-label="Optie ${optionLabel}" />
+                               <span>${optionLabel}</span>
+                             </label>
+                           </p>`;
                 });
               }
-              quizForm.appendChild(questionContainer);
+              step.innerHTML = html;
+              stepsContainer.appendChild(step);
             });
 
-            const submitBtn = document.createElement("button");
-            submitBtn.type = "submit";
-            submitBtn.innerText = "Resultaten Berekenen";
-            submitBtn.classList.add(
-              "bg-blue-600",
-              "text-white",
-              "px-4",
-              "py-2",
-              "rounded",
-              "hover:bg-blue-700"
-            );
-            quizForm.appendChild(submitBtn);
+            // Attach change listeners for highlighting and auto-save
+            document.querySelectorAll("input[type='radio'], input[type='checkbox']").forEach((input) => {
+              input.addEventListener("change", function () {
+                if (this.type === "radio") {
+                  const group = document.getElementsByName(this.name);
+                  group.forEach((el) => {
+                    el.parentNode.classList.remove("selected-option");
+                  });
+                }
+                if (this.checked) {
+                  this.parentNode.classList.add("selected-option");
+                } else {
+                  this.parentNode.classList.remove("selected-option");
+                }
+                saveProgress();
+              });
+            });
           },
         };
 
-        // Module: QuizValidator
-        const QuizValidator = {
-          validateQuiz: function () {
-            let allAnswered = true;
-            // Valideer naamveld
+        // ------------------------------
+        // Navigation and Validation
+        // ------------------------------
+        function showStep(stepIndex) {
+          const steps = document.querySelectorAll(".quiz-step");
+          steps.forEach((step) => step.classList.remove("active"));
+          const current = document.querySelector(`.quiz-step[data-step="${stepIndex}"]`);
+          if (current) current.classList.add("active");
+          const progressPercent = (stepIndex / (totalSteps() - 1)) * 100;
+          document.getElementById("progressBar").style.width = progressPercent + "%";
+          const prevBtn = document.getElementById("prevBtn");
+          const nextBtn = document.getElementById("nextBtn");
+          prevBtn.style.display = stepIndex === 0 ? "none" : "inline-block";
+          nextBtn.innerText = stepIndex === totalSteps() - 1 ? "Submit" : "Volgende";
+          saveProgress();
+        }
+
+        function validateCurrentStep() {
+          const activeStep = document.querySelector(".quiz-step.active");
+          activeStep.querySelectorAll(".step-error").forEach((err) => err.remove());
+          let valid = true;
+          if (currentStep === 0) {
             const firstNameInput = document.getElementById("firstName");
             const firstName = firstNameInput.value.trim();
             if (firstName === "" || firstName.split(/\s+/).length > 1) {
               const error = document.createElement("p");
-              error.classList.add(
-                "error-message",
-                "text-red-600",
-                "mt-1",
-                "text-sm"
-              );
-              error.innerText =
-                "✱ Vul alstublieft alleen uw voornaam in vanwege privacy.";
-              document.getElementById("name-container").appendChild(error);
-              allAnswered = false;
+              error.classList.add("step-error");
+              error.innerText = "✱ Vul alstublieft alleen uw voornaam in vanwege privacy.";
+              activeStep.appendChild(error);
+              valid = false;
             } else {
               window.userFirstName = firstName;
             }
-            // Valideer elke vraag
-            QuizData.questions.forEach((q, qIndex) => {
-              if (q.subquestions) {
-                q.subquestions.forEach((subq, subIndex) => {
-                  const selected = document.querySelector(
-                    `input[name="q${qIndex}_sub${subIndex}"]:checked`
-                  );
-                  if (!selected) {
-                    const subContainer = document.getElementById(
-                      `question-${qIndex}-sub-${subIndex}`
-                    );
-                    const error = document.createElement("p");
-                    error.classList.add(
-                      "error-message",
-                      "text-red-600",
-                      "mt-1",
-                      "text-sm"
-                    );
-                    error.innerText =
-                      "✱ Vul alstublieft een antwoord in voor deze vraag.";
-                    subContainer.appendChild(error);
-                    allAnswered = false;
-                  }
-                });
+          } else {
+            const questionData = quizData.questions[currentStep - 1];
+            if (questionData.subquestions) {
+              questionData.subquestions.forEach((subq, subIndex) => {
+                const selected = document.querySelector(`input[name="q${currentStep - 1}_sub${subIndex}"]:checked`);
+                if (!selected) {
+                  const subContainer = document.getElementById(`q${currentStep - 1}_sub_${subIndex}`);
+                  const error = document.createElement("p");
+                  error.classList.add("step-error");
+                  error.innerText = "✱ Vul alstublieft een antwoord in voor deze vraag.";
+                  subContainer.appendChild(error);
+                  valid = false;
+                }
+              });
+            } else {
+              const isMultiple = questionData.instructions && questionData.instructions.toLowerCase().includes("alle opties");
+              if (isMultiple) {
+                const checkedOptions = document.querySelectorAll(`input[name="q${currentStep - 1}"]:checked`);
+                if (checkedOptions.length === 0) {
+                  const error = document.createElement("p");
+                  error.classList.add("step-error");
+                  error.innerText = "✱ Vul alstublieft een antwoord in voor deze vraag.";
+                  activeStep.appendChild(error);
+                  valid = false;
+                }
               } else {
-                const isMultiple =
-                  q.instructions &&
-                  q.instructions.toLowerCase().includes("alle opties");
-                if (isMultiple) {
-                  const checkedOptions = document.querySelectorAll(
-                    `input[name="q${qIndex}"]:checked`
-                  );
-                  if (checkedOptions.length === 0) {
-                    const questionContainer = document.getElementById(
-                      `question-${qIndex}`
-                    );
-                    const error = document.createElement("p");
-                    error.classList.add(
-                      "error-message",
-                      "text-red-600",
-                      "mt-1",
-                      "text-sm"
-                    );
-                    error.innerText =
-                      "✱ Vul alstublieft een antwoord in voor deze vraag.";
-                    questionContainer.appendChild(error);
-                    allAnswered = false;
-                  }
-                } else {
-                  const selected = document.querySelector(
-                    `input[name="q${qIndex}"]:checked`
-                  );
-                  if (!selected) {
-                    const questionContainer = document.getElementById(
-                      `question-${qIndex}`
-                    );
-                    const error = document.createElement("p");
-                    error.classList.add(
-                      "error-message",
-                      "text-red-600",
-                      "mt-1",
-                      "text-sm"
-                    );
-                    error.innerText =
-                      "✱ Vul alstublieft een antwoord in voor deze vraag.";
-                    questionContainer.appendChild(error);
-                    allAnswered = false;
-                  }
+                const selected = document.querySelector(`input[name="q${currentStep - 1}"]:checked`);
+                if (!selected) {
+                  const error = document.createElement("p");
+                  error.classList.add("step-error");
+                  error.innerText = "✱ Vul alstublieft een antwoord in voor deze vraag.";
+                  activeStep.appendChild(error);
+                  valid = false;
                 }
               }
-            });
-            if (!allAnswered) {
-              const firstError = document.querySelector(".error-message");
-              if (firstError) {
-                firstError.scrollIntoView({ behavior: "smooth", block: "center" });
-              }
             }
-            return allAnswered;
-          },
-        };
+          }
+          return valid;
+        }
 
-        // Module: QuizCalculator
+        // ------------------------------
+        // Quiz Calculator and Result Renderer
+        // ------------------------------
         const QuizCalculator = {
           calculateScores: function () {
             const scores = {
@@ -474,38 +532,31 @@
               Superfan: 0,
               Observer: 0,
             };
-            QuizData.questions.forEach((q, qIndex) => {
+            quizData.questions.forEach((q, qIndex) => {
               if (q.subquestions) {
                 q.subquestions.forEach((subq, subIndex) => {
-                  const selected = document.querySelector(
-                    `input[name="q${qIndex}_sub${subIndex}"]:checked`
-                  );
-                  const optIndex = parseInt(selected.value);
-                  const personaList = subq.persona[optIndex] || [];
+                  const selected = document.querySelector(`input[name="q${qIndex}_sub${subIndex}"]:checked`);
+                  const opt = selected.value;
+                  const personaList = subq.persona[opt] || [];
                   personaList.forEach((persona) => {
                     scores[persona] += 1;
                   });
                 });
               } else {
-                const isMultiple =
-                  q.instructions && q.instructions.toLowerCase().includes("alle opties");
+                const isMultiple = q.instructions && q.instructions.toLowerCase().includes("alle opties");
                 if (isMultiple) {
-                  const checkedOptions = document.querySelectorAll(
-                    `input[name="q${qIndex}"]:checked`
-                  );
+                  const checkedOptions = document.querySelectorAll(`input[name="q${qIndex}"]:checked`);
                   checkedOptions.forEach((option) => {
-                    const optIndex = parseInt(option.value);
-                    const personaList = q.persona[optIndex] || [];
+                    const opt = option.value;
+                    const personaList = q.persona[opt] || [];
                     personaList.forEach((persona) => {
                       scores[persona] += 1;
                     });
                   });
                 } else {
-                  const selected = document.querySelector(
-                    `input[name="q${qIndex}"]:checked`
-                  );
-                  const optIndex = parseInt(selected.value);
-                  const personaList = q.persona[optIndex] || [];
+                  const selected = document.querySelector(`input[name="q${qIndex}"]:checked`);
+                  const opt = selected.value;
+                  const personaList = q.persona[opt] || [];
                   personaList.forEach((persona) => {
                     scores[persona] += 1;
                   });
@@ -531,125 +582,110 @@
           },
         };
 
-        // Module: ResultRenderer
         const ResultRenderer = {
           renderResults: function (topPersonas, scores) {
+            clearSavedProgress();
+            document.getElementById("quizForm").style.display = "none";
             const resultDiv = document.getElementById("result");
             resultDiv.innerHTML = "";
-            resultDiv.classList.remove("hidden");
+            resultDiv.classList.remove("hide");
 
-            const heading = document.createElement("h2");
-            heading.classList.add("text-2xl", "font-bold", "mb-4");
+            const heading = document.createElement("h5");
+            heading.classList.add("center-align");
             heading.innerText = "Uw AI Persona Resultaat";
             resultDiv.appendChild(heading);
 
+            const p = document.createElement("p");
+            p.style.marginBottom = "16px";
             if (topPersonas.length === 1) {
-              const p = document.createElement("p");
-              p.classList.add("mb-4");
-              p.innerHTML = `Op basis van uw antwoorden past de volgende persona het beste bij u: <span class="font-semibold">${PersonaDescriptions[topPersonas[0]]}</span>`;
-              resultDiv.appendChild(p);
+              p.innerHTML = `Op basis van uw antwoorden past de volgende persona het beste bij u: <strong>${personaDescriptions[topPersonas[0]]}</strong>`;
             } else {
-              const p = document.createElement("p");
-              p.classList.add("mb-4");
               p.innerHTML = `Er is sprake van een gelijke score. De volgende persona's passen even goed bij u:<br>`;
               topPersonas.forEach((persona) => {
-                p.innerHTML += `<span class="font-semibold block mt-2">${PersonaDescriptions[persona]}</span>`;
+                p.innerHTML += `<strong style="display:block; margin-top:8px;">${personaDescriptions[persona]}</strong>`;
               });
-              resultDiv.appendChild(p);
             }
+            resultDiv.appendChild(p);
 
             const barchartContainer = document.createElement("div");
-            barchartContainer.classList.add("mt-4");
-
+            barchartContainer.style.marginTop = "16px";
             let globalMax = 0;
             for (let key in scores) {
               if (scores[key] > globalMax) {
                 globalMax = scores[key];
               }
             }
-
             for (let persona in scores) {
               const score = scores[persona];
               const percent = globalMax > 0 ? (score / globalMax) * 100 : 0;
-
               const barContainer = document.createElement("div");
-              barContainer.classList.add("mb-4");
-
+              barContainer.style.marginBottom = "16px";
               const labelContainer = document.createElement("div");
-              labelContainer.classList.add("flex", "justify-between", "mb-1");
+              labelContainer.style.display = "flex";
+              labelContainer.style.justifyContent = "space-between";
+              labelContainer.style.marginBottom = "8px";
               const labelSpan = document.createElement("span");
-              labelSpan.classList.add("font-semibold");
+              labelSpan.style.fontWeight = "bold";
               labelSpan.innerText = persona;
               const scoreSpan = document.createElement("span");
-              scoreSpan.classList.add("font-semibold");
+              scoreSpan.style.fontWeight = "bold";
               scoreSpan.innerText = score;
               labelContainer.appendChild(labelSpan);
               labelContainer.appendChild(scoreSpan);
               barContainer.appendChild(labelContainer);
-
               const barBackground = document.createElement("div");
-              barBackground.classList.add("w-full", "bg-gray-300", "h-4", "rounded");
+              barBackground.style.width = "100%";
+              barBackground.style.backgroundColor = "#e0e0e0";
+              barBackground.style.height = "16px";
+              barBackground.style.borderRadius = "4px";
               const barFill = document.createElement("div");
-              barFill.classList.add("bg-blue-600", "h-4", "rounded");
+              barFill.style.backgroundColor = "#2196F3";
+              barFill.style.height = "16px";
+              barFill.style.borderRadius = "4px";
               barFill.style.width = percent + "%";
               barBackground.appendChild(barFill);
               barContainer.appendChild(barBackground);
-
               barchartContainer.appendChild(barContainer);
             }
             resultDiv.appendChild(barchartContainer);
 
             const pdfBtn = document.createElement("button");
             pdfBtn.innerText = "Download PDF rapport";
-            pdfBtn.classList.add(
-              "mt-6",
-              "bg-purple-600",
-              "text-white",
-              "px-4",
-              "py-2",
-              "rounded",
-              "hover:bg-purple-700",
-              "mr-4"
-            );
+            pdfBtn.classList.add("btn", "purple");
+            pdfBtn.style.marginRight = "16px";
+            pdfBtn.style.marginTop = "16px";
             pdfBtn.addEventListener("click", PDFGenerator.generatePDF);
             resultDiv.appendChild(pdfBtn);
 
             const restartBtn = document.createElement("button");
             restartBtn.innerText = "Opnieuw beginnen";
-            restartBtn.classList.add(
-              "mt-6",
-              "bg-green-600",
-              "text-white",
-              "px-4",
-              "py-2",
-              "rounded",
-              "hover:bg-green-700"
-            );
+            restartBtn.classList.add("btn", "green");
+            restartBtn.style.marginTop = "16px";
             restartBtn.addEventListener("click", () => {
+              document.getElementById("quizForm").style.display = "block";
+              document.getElementById("result").classList.add("hide");
               document.getElementById("quizForm").reset();
-              resultDiv.classList.add("hidden");
-              window.scrollTo(0, 0);
+              clearSavedProgress();
+              currentStep = 0;
+              showStep(currentStep);
             });
             resultDiv.appendChild(restartBtn);
             resultDiv.scrollIntoView({ behavior: "smooth" });
           },
         };
 
-        // Module: PDFGenerator
         const PDFGenerator = {
           generatePDF: function () {
-            // Extra: Haal het antwoord op van de vraag over AI-ondersteuning door uw organisatie (vraag index 2)
             const orgInput = document.querySelector(`input[name="q2"]:checked`);
             const orgAnswer = orgInput
-              ? QuizData.questions[2].options[parseInt(orgInput.value)]
+              ? quizData.questions[2].options[parseInt(orgInput.value)]
               : "Geen antwoord";
-
             const pdfContent = document.createElement("div");
             pdfContent.style.padding = "20px";
             pdfContent.style.fontFamily = "Arial, sans-serif";
             pdfContent.innerHTML = `
-          <div class="p-6 bg-white rounded shadow max-w-2xl mx-auto">
-            <h1 class="text-3xl font-bold mb-4" style="text-align: center;">AI Persona Quiz Rapport</h1>
+          <div class="card-panel" style="padding:24px; max-width:800px; margin:0 auto;">
+            <h5 class="center-align">AI Persona Quiz Rapport</h5>
             <p><strong>Naam:</strong> ${window.userFirstName || ""}</p>
             ${
               window.quizResults.topPersonas.length === 1
@@ -657,7 +693,7 @@
                 : `<p>Er is sprake van een gelijke score. Uw resultaten duiden op de volgende persona's: <strong>${window.quizResults.topPersonas.join(", ")}</strong>.</p>`
             }
             <br>
-            <h3 class="text-xl font-bold mb-4">Scores per Persona</h3>
+            <h6>Scores per Persona</h6>
             <ul>
               ${Object.keys(window.quizResults.scores)
                 .map(
@@ -667,19 +703,17 @@
                 .join("")}
             </ul>
             <br>
-            <h3 class="text-xl font-bold mb-4">Ondersteuning van AI door uw organisatie</h3>
+            <h6>Ondersteuning van AI door uw organisatie</h6>
             <p>Uw organisatie ondersteunt het gebruik van AI als volgt: <strong>${orgAnswer}</strong>.</p>
             <br>
-            <p>${ReportBackground}</p>
+            <div>${reportBackground}</div>
           </div>
           `;
-
             const tempDiv = document.createElement("div");
             tempDiv.style.position = "absolute";
             tempDiv.style.left = "-9999px";
             tempDiv.appendChild(pdfContent);
             document.body.appendChild(tempDiv);
-
             const opt = {
               margin: 0.5,
               filename: `${window.userFirstName}_AI_Persona_Rapport.pdf`,
@@ -687,7 +721,6 @@
               html2canvas: { scale: 2 },
               jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
             };
-
             html2pdf()
               .set(opt)
               .from(pdfContent)
@@ -698,29 +731,39 @@
           },
         };
 
-        // Module: QuizController (init en event-handling)
+        // ------------------------------
+        // Quiz Controller: Navigation Events
+        // ------------------------------
         const QuizController = {
           init: function () {
             QuizRenderer.renderQuiz();
-            document
-              .getElementById("quizForm")
-              .addEventListener("submit", (event) => {
-                event.preventDefault();
-                // Verwijder eventuele oude foutmeldingen
-                document.querySelectorAll(".error-message").forEach((el) => el.remove());
-                if (QuizValidator.validateQuiz()) {
-                  const scores = QuizCalculator.calculateScores();
-                  const topPersonas = QuizCalculator.calculateTopPersonas(scores);
-                  window.quizResults = { topPersonas, scores };
-                  ResultRenderer.renderResults(topPersonas, scores);
-                }
-              });
+            loadSavedProgress();
+            showStep(currentStep);
+            document.getElementById("nextBtn").addEventListener("click", function () {
+              if (!validateCurrentStep()) return;
+              if (currentStep === totalSteps() - 1) {
+                const scores = QuizCalculator.calculateScores();
+                const topPersonas = QuizCalculator.calculateTopPersonas(scores);
+                window.quizResults = { topPersonas, scores };
+                ResultRenderer.renderResults(topPersonas, scores);
+              } else {
+                currentStep++;
+                showStep(currentStep);
+              }
+            });
+            document.getElementById("prevBtn").addEventListener("click", function () {
+              if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+              }
+            });
           },
         };
 
-        // Init de quiz wanneer de DOM geladen is
         document.addEventListener("DOMContentLoaded", QuizController.init);
       })();
     </script>
+    <!-- Materialize JS via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   </body>
 </html>
