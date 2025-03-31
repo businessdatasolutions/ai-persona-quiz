@@ -10,7 +10,7 @@ Dit project is een eenvoudige webapplicatie die een quiz aanbiedt om inzicht te 
   - 🥰 **The Maximalist** - All-in op AI en al profiteren van de voordelen.
   - 🤫 **The Underground** - Gebruikt AI discreet en is terughoudend om het met collega's te delen.
   - 😎 **The Rebel** - Ziet AI als een bedreiging en rebelleert tegen de AI-hype.
-  - 🤩 **The Superfan** - Geëxciteerd over AI maar juicht vanaf de zijlijn.
+  - 🤩 **The Superfan** - Enthousiast over AI maar juicht vanaf de zijlijn.
   - 🧐 **The Observer** - Onverschillig tegenover AI, maar volgt de ontwikkelingen met interesse en voorzichtigheid.
 
 - **Onderbouwing**
