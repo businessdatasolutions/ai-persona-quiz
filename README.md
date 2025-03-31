@@ -1,5 +1,3 @@
-Hier is de bijgewerkte README met de beschrijvingen van de vijf persona's toegevoegd:
-
 # AI Persona Quiz
 
 Dit project is een eenvoudige webapplicatie die een quiz aanbiedt om inzicht te krijgen in uw persoonlijke AI-profiel. De quiz is gebaseerd op onderzoek van Slack’s Workforce Lab en maakt onderscheid tussen vijf AI-persona’s. Door het invullen van de quiz en het vergelijken van resultaten met collega’s, kunt u beter inzicht krijgen in de diverse behoeften, verwachtingen en motivaties rondom AI-gebruik op de werkvloer.
