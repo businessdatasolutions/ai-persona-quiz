@@ -7,11 +7,11 @@ Dit project is een eenvoudige webapplicatie die een quiz aanbiedt om inzicht te 
 - **Vijf AI-persona’s**
   De quiz maakt gebruik van vijf persona’s: **Maximalist**, **Underground**, **Rebel**, **Superfan** en **Observer**. Elk van deze persona’s weerspiegelt een specifieke houding ten opzichte van het gebruik van AI in een professionele omgeving.
 
-  - **Maximalist** - All-in op AI en al profiteren van de voordelen.
-  - **Underground** - Gebruikt AI discreet en is terughoudend om het met collega's te delen.
-  - **Rebel** - Ziet AI als een bedreiging en rebelleert tegen de AI-hype.
-  - **Superfan** - Geëxciteerd over AI maar juicht vanaf de zijlijn.
-  - **Observer** - Onverschillig tegenover AI, maar volgt de ontwikkelingen met interesse en voorzichtigheid.
+  - 🥰 **The Maximalist** - All-in op AI en al profiteren van de voordelen.
+  - 🤫 **The Underground** - Gebruikt AI discreet en is terughoudend om het met collega's te delen.
+  - 😎 **The Rebel** - Ziet AI als een bedreiging en rebelleert tegen de AI-hype.
+  - 🤩 **The Superfan** - Geëxciteerd over AI maar juicht vanaf de zijlijn.
+  - 🧐 **The Observer** - Onverschillig tegenover AI, maar volgt de ontwikkelingen met interesse en voorzichtigheid.
 
 - **Onderbouwing**
   Het idee is geïnspireerd door een onderzoek van Slack’s Workforce Lab, dat zich richtte op het in kaart brengen van werkmotivaties, AI-vaardigheden en AI-enthousiasme onder kantoormedewerkers.
